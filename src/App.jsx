@@ -18,7 +18,7 @@ export default function App() {
 
   return (
     <div style={{ fontFamily: 'sans-serif', padding: '2rem', textAlign: 'center' }}>
-      <h1>Editly Web App</h1>
+      <h1>Framecraft</h1>
       <p>Supabase Status: {status}</p>
     </div>
   );
