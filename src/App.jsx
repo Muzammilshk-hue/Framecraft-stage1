@@ -3,13 +3,17 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+// Safely initialize Supabase only if keys exist
+const supabase = (supabaseUrl && supabaseAnonKey) 
+  ? createClient(supabaseUrl, supabaseAnonKey) 
+  : null;
 
 export default function App() {
-  const [status, setStatus] = useState('Connecting to Supabase...');
+  const [status, setStatus] = useState('Checking Supabase connection...');
 
   useEffect(() => {
-    if (supabaseUrl && supabaseAnonKey) {
+    if (supabase) {
       setStatus('Connected to Supabase!');
     } else {
       setStatus('Missing Supabase environment variables');
