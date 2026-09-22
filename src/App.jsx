@@ -1,5 +1,5 @@
+import SubscriptionPlans from './components/SubscriptionPlans.jsx';
 import React from 'react';
-import SubscriptionPlans from './components/SubscriptionPlans';
 import SubscriptionManager from './components/SubscriptionManager';
 
 function App() {
