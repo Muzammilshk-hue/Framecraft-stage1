@@ -1,6 +1,5 @@
-import SubscriptionPlans from './components/SubscriptionPlans.jsx';
 import React from 'react';
-import SubscriptionManager from './components/SubscriptionManager';
+import SubscriptionPlans from './components/SubscriptionPlans.jsx';
 
 function App() {
   return (
@@ -17,9 +16,6 @@ function App() {
             <a href="#plans" className="text-sm font-medium text-gray-600 hover:text-blue-600">
               Plans
             </a>
-            <a href="#manage" className="text-sm font-medium text-gray-600 hover:text-blue-600">
-              My Subscription
-            </a>
           </nav>
         </div>
       </header>
@@ -29,11 +25,6 @@ function App() {
         {/* Subscription Plans Section */}
         <section id="plans">
           <SubscriptionPlans />
-        </section>
-
-        {/* Subscription Manager Section */}
-        <section id="manage" className="px-4 sm:px-6 lg:px-8">
-          <SubscriptionManager />
         </section>
       </main>
     </div>
