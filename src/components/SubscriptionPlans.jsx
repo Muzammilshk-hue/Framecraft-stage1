@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PaymentModal from '../PaymentModal';
+import PaymentModal from '../PaymentModal.jsx';
 
 export default function SubscriptionPlans() {
   const [selectedPlan, setSelectedPlan] = useState(null);
