@@ -1,9 +1,29 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
+
+window.addEventListener('error', (e) => {
+  document.body.innerHTML =
+    '<pre style="color:red;padding:20px;white-space:pre-wrap">' +
+    'Uncaught error: ' + e.message + '\n' + (e.error?.stack || '') +
+    '</pre>';
+});
+
+class ErrorBoundary extends React.Component {
+  constructor(props) { super(props); this.state = { error: null }; }
+  static getDerivedStateFromError(error) { return { error }; }
+  render() {
+    if (this.state.error) {
+      return (
+        <pre style={{ padding: 20, color: 'red', whiteSpace: 'pre-wrap' }}>
+          {this.state.error.message + '\n' + this.state.error.stack}
+        </pre>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-)
+  <ErrorBoundary><App /></ErrorBoundary>
+);
