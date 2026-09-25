@@ -26,3 +26,18 @@ export default function SubscriptionPlans() {
           onClick={() => setIsModalOpen(true)}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors shadow-sm"
         >
+          Subscribe with UPI
+        </button>
+      </div>
+
+      {/* Keeps your payment modal working */}
+      {isModalOpen && (
+        <PaymentModal 
+          plan="Pro" 
+          price={25} 
+          onClose={() => setIsModalOpen(false)} 
+        />
+      )}
+    </div>
+  );
+}
