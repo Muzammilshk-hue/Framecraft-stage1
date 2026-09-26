@@ -1,64 +1,395 @@
 import React, { useState } from 'react';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('home');
+  // Navigation & View State
+  const [currentView, setCurrentView] = useState('home'); // 'home', 'family', 'pro', 'shop', 'profile', 'settings'
+  const [familyTab, setFamilyTab] = useState('create'); // 'create', 'saved', 'export'
+  const [proTab, setProTab] = useState('create'); // 'create', 'inventory', 'analytics'
+
+  // Interactive Poll State
+  const [selectedPollOption, setSelectedPollOption] = useState(null);
+  const [pollVotes, setPollVotes] = useState({ 1: 142, 2: 389, 3: 97 });
+
+  // Payment Modal State (Preserved Stage 1 Logic)
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [utrNumber, setUtrNumber] = useState('');
+  const [paymentStatus, setPaymentStatus] = useState('');
+
+  const handleVote = (optionId) => {
+    if (!selectedPollOption) {
+      setSelectedPollOption(optionId);
+      setPollVotes(prev => ({ ...prev, [optionId]: prev[optionId] + 1 }));
+    }
+  };
+
+  const handleUtrSubmit = (e) => {
+    e.preventDefault();
+    if (!utrNumber.trim()) return;
+    setPaymentStatus('verifying');
+    setTimeout(() => {
+      setPaymentStatus('success');
+    }, 1500);
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans pb-20">
-      {/* Top Header */}
-      <header className="bg-white border-b border-gray-200 px-4 py-3 sticky top-0 z-40 flex justify-between items-center shadow-sm">
-        <h1 className="text-xl font-bold text-blue-600 tracking-tight">FrameCraft</h1>
-        <button className="p-2 text-gray-500 hover:text-gray-700">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-        </button>
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col max-w-md mx-auto border-x border-slate-200 shadow-xl relative pb-10">
+      
+      {/* 1. HEADER */}
+      <header className="bg-white border-b border-slate-200 px-4 py-3 sticky top-0 z-40 flex items-center justify-between">
+        <div 
+          className="flex items-center space-x-2 cursor-pointer"
+          onClick={() => setCurrentView('home')}
+        >
+          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-black text-lg">
+            F
+          </div>
+          <span className="text-xl font-bold tracking-tight text-slate-900">FrameCraft</span>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          {/* Profile Access */}
+          <button 
+            onClick={() => setCurrentView('profile')}
+            className={`p-2 rounded-full transition-colors ${currentView === 'profile' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'}`}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </button>
+          
+          {/* Settings Access */}
+          <button 
+            onClick={() => setCurrentView('settings')}
+            className={`p-2 rounded-full transition-colors ${currentView === 'settings' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'}`}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </button>
+        </div>
       </header>
 
-      {/* Main Content Area */}
-      <main className="flex-1 p-4 max-w-md mx-auto w-full space-y-4">
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-5 text-white shadow-md">
-          <span className="text-xs font-semibold bg-white/20 px-2.5 py-1 rounded-full uppercase tracking-wider">Active Workspace</span>
-          <h2 className="text-xl font-bold mt-2">FrameCraft Studio</h2>
-          <p className="text-sm text-blue-100 mt-1">Select a tab below to customize your frames or manage your account.</p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm text-center">
-            <div className="text-2xl mb-1">📸</div>
-            <div className="text-sm font-semibold text-gray-800">Quick Edit</div>
+      {/* VIEW CONTROLLER */}
+      {currentView === 'home' && (
+        <main className="p-4 space-y-6 flex-1">
+          
+          {/* Welcome Card */}
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-5 text-white shadow-md">
+            <h2 className="text-2xl font-extrabold tracking-tight">FrameCraft Studio</h2>
+            <p className="text-blue-100 text-sm mt-1">Select an edit mode or explore the ecosystem.</p>
           </div>
-          <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm text-center">
-            <div className="text-2xl mb-1">✨</div>
-            <div className="text-sm font-semibold text-gray-800">AI Magic</div>
+
+          {/* MODE SELECTION CARDS */}
+          <div className="space-y-3">
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">Select Editing Mode</h3>
+            
+            {/* 2. FAMILY MODE ENTRY POINT */}
+            <div 
+              onClick={() => setCurrentView('family')}
+              className="bg-emerald-50 border border-emerald-200 hover:border-emerald-300 p-5 rounded-2xl cursor-pointer transition-all shadow-sm hover:shadow-md flex items-center justify-between"
+            >
+              <div className="space-y-1">
+                <div className="flex items-center space-x-2">
+                  <span className="text-xl">🌿</span>
+                  <h4 className="text-lg font-bold text-emerald-900">Family Mode</h4>
+                </div>
+                <p className="text-xs text-emerald-700">Simple, peaceful editing without complexity.</p>
+                <div className="flex space-x-2 pt-2 text-[10px] font-semibold text-emerald-800">
+                  <span className="bg-emerald-100 px-2 py-0.5 rounded">Create</span>
+                  <span className="bg-emerald-100 px-2 py-0.5 rounded">Saved</span>
+                  <span className="bg-emerald-100 px-2 py-0.5 rounded">Gallery Export</span>
+                </div>
+              </div>
+              <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+
+            {/* 3. PROFESSIONAL MODE ENTRY POINT */}
+            <div 
+              onClick={() => setCurrentView('pro')}
+              className="bg-slate-900 border border-slate-800 text-white p-5 rounded-2xl cursor-pointer transition-all shadow-sm hover:shadow-md flex items-center justify-between"
+            >
+              <div className="space-y-1">
+                <div className="flex items-center space-x-2">
+                  <span className="text-xl">⚡</span>
+                  <h4 className="text-lg font-bold text-white">Professional Mode</h4>
+                  <span className="bg-blue-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">PRO</span>
+                </div>
+                <p className="text-xs text-slate-300">Advanced tools, analytics, & AI suite.</p>
+                <div className="flex space-x-2 pt-2 text-[10px] font-semibold text-slate-300">
+                  <span className="bg-slate-800 px-2 py-0.5 rounded">Workspace</span>
+                  <span className="bg-slate-800 px-2 py-0.5 rounded">Inventory</span>
+                  <span className="bg-slate-800 px-2 py-0.5 rounded">Analytics</span>
+                </div>
+              </div>
+              <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </div>
+
+          {/* 4. SHOP SECTION */}
+          <div className="space-y-2">
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">Marketplace</h3>
+            <div 
+              onClick={() => setCurrentView('shop')}
+              className="bg-white border border-slate-200 hover:border-slate-300 p-4 rounded-xl cursor-pointer transition-all shadow-sm flex items-center justify-between"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="p-2.5 bg-amber-50 text-amber-600 rounded-lg">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="font-bold text-sm text-slate-800">FrameCraft Shop</h4>
+                  <p className="text-xs text-slate-500">Premium templates, frames & PRO access</p>
+                </div>
+              </div>
+              <button 
+                onClick={(e) => { e.stopPropagation(); setShowPaymentModal(true); }}
+                className="bg-blue-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg hover:bg-blue-700"
+              >
+                ₹25 PRO
+              </button>
+            </div>
+          </div>
+
+          {/* 6. VOTING POLL (ACTIVE EXCEPTION) */}
+          <div className="bg-white border border-slate-200 p-4 rounded-2xl space-y-3 shadow-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Community Poll</span>
+              <span className="text-[10px] bg-blue-50 text-blue-600 font-semibold px-2 py-0.5 rounded-full">Active</span>
+            </div>
+            <h4 className="font-bold text-sm text-slate-900">Which feature should we build next?</h4>
+            
+            <div className="space-y-2">
+              {[
+                { id: 1, title: 'AI Background Removal' },
+                { id: 2, title: 'Cinematic Video Overlay Filters' },
+                { id: 3, title: 'Custom Typography Generator' }
+              ].map(option => {
+                const totalVotes = Object.values(pollVotes).reduce((a, b) => a + b, 0);
+                const pct = Math.round((pollVotes[option.id] / totalVotes) * 100);
+                const isSelected = selectedPollOption === option.id;
+
+                return (
+                  <button
+                    key={option.id}
+                    onClick={() => handleVote(option.id)}
+                    className={`w-full text-left p-2.5 rounded-xl border transition-all text-xs relative overflow-hidden ${
+                      isSelected ? 'border-blue-600 bg-blue-50/50' : 'border-slate-200 hover:border-slate-300'
+                    }`}
+                  >
+                    <div 
+                      className="absolute top-0 left-0 bottom-0 bg-blue-100/60 transition-all duration-500" 
+                      style={{ width: `${pct}%` }} 
+                    />
+                    <div className="relative z-10 flex justify-between items-center">
+                      <span className="font-medium text-slate-800">{option.title}</span>
+                      <span className="font-bold text-slate-600">{pct}%</span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 5. COMING SOON ECOSYSTEM FEATURES */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between px-1">
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Ecosystem Roadmap</h3>
+              <span className="text-[10px] bg-slate-200 text-slate-600 font-bold px-2 py-0.5 rounded-full">Future Releases</span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { title: 'Clans', desc: 'Collaborative team editing spaces' },
+                { title: 'Creator Marketplace', desc: 'Sell your custom frames & templates' },
+                { title: 'Ad Workshop', desc: 'Monetized brand campaign frames' },
+                { title: 'Creator Earnings', desc: 'Track payout & revenue streams' },
+                { title: 'Business Suite', desc: 'Enterprise assets & white-labeling' }
+              ].map((item, idx) => (
+                <div key={idx} className="bg-slate-100/80 border border-slate-200 p-3 rounded-xl relative opacity-80">
+                  <span className="absolute top-2 right-2 bg-slate-200 text-slate-600 text-[9px] font-extrabold px-1.5 py-0.5 rounded">
+                    SOON
+                  </span>
+                  <h5 className="font-bold text-xs text-slate-800 pr-10">{item.title}</h5>
+                  <p className="text-[10px] text-slate-500 mt-1">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </main>
+      )}
+
+      {/* 2. FAMILY MODE SUB-VIEW */}
+      {currentView === 'family' && (
+        <div className="p-4 space-y-4 flex-1">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+            <button 
+              onClick={() => setCurrentView('home')} 
+              className="text-xs font-bold text-slate-600 flex items-center space-x-1 hover:text-slate-900"
+            >
+              <span>← Back Home</span>
+            </button>
+            <span className="text-xs font-extrabold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full">
+              Family Mode
+            </span>
+          </div>
+
+          {/* Family Mode Sub-Tabs */}
+          <div className="flex bg-slate-200 p-1 rounded-xl">
+            {['create', 'saved', 'export'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setFamilyTab(tab)}
+                className={`flex-1 py-1.5 text-xs font-bold rounded-lg capitalize transition-all ${
+                  familyTab === tab ? 'bg-white text-emerald-800 shadow-sm' : 'text-slate-600'
+                }`}
+              >
+                {tab === 'export' ? 'Export to Gallery' : tab}
+              </button>
+            ))}
+          </div>
+
+          {/* Family Mode Content (Peaceful, No Pro/Inventory/Analytics) */}
+          <div className="bg-white border border-emerald-100 rounded-2xl p-6 text-center space-y-4 shadow-sm min-h-[300px] flex flex-col justify-center items-center">
+            {familyTab === 'create' && (
+              <>
+                <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-2xl">
+                  🖼️
+                </div>
+                <h3 className="font-bold text-slate-800">Family Photo Frame Editor</h3>
+                <p className="text-xs text-slate-500 max-w-xs">Clean, simple photo frame selection for family memories.</p>
+                <button className="bg-emerald-600 text-white font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-emerald-700">
+                  Select Photo
+                </button>
+              </>
+            )}
+
+            {familyTab === 'saved' && (
+              <>
+                <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-2xl">
+                  📁
+                </div>
+                <h3 className="font-bold text-slate-800">Your Saved Memories</h3>
+                <p className="text-xs text-slate-500">No saved family photos yet.</p>
+              </>
+            )}
+
+            {familyTab === 'export' && (
+              <>
+                <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-2xl">
+                  📲
+                </div>
+                <h3 className="font-bold text-slate-800">Export Directly to Phone Gallery</h3>
+                <p className="text-xs text-slate-500">High quality, watermark-free exports for family projects.</p>
+              </>
+            )}
           </div>
         </div>
-      </main>
+      )}
 
-      {/* Fixed Bottom Navigation Shell */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-2 py-2 flex justify-around items-center z-50">
-        {[
-          { id: 'home', label: 'Home', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6' },
-          { id: 'family', label: 'Family', icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' },
-          { id: 'pro', label: 'Pro', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
-          { id: 'shop', label: 'Shop', icon: 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z' },
-          { id: 'profile', label: 'Profile', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex flex-col items-center py-1 px-3 rounded-lg transition-colors ${
-              activeTab === tab.id ? 'text-blue-600 font-semibold' : 'text-gray-400 hover:text-gray-600'
-            }`}
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={tab.icon} />
-            </svg>
-            <span className="text-xs mt-1">{tab.label}</span>
-          </button>
-        ))}
-      </nav>
-    </div>
-  );
-}
+      {/* 3. PROFESSIONAL MODE SUB-VIEW */}
+      {currentView === 'pro' && (
+        <div className="p-4 space-y-4 flex-1">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+            <button 
+              onClick={() => setCurrentView('home')} 
+              className="text-xs font-bold text-slate-600 flex items-center space-x-1 hover:text-slate-900"
+            >
+              <span>← Back Home</span>
+            </button>
+            <span className="text-xs font-extrabold text-white bg-slate-900 px-2.5 py-1 rounded-full flex items-center space-x-1">
+              <span>⚡ Pro Mode</span>
+            </span>
+          </div>
+
+          {/* Professional Mode Sub-Tabs (Inventory & Analytics belong ONLY here) */}
+          <div className="flex bg-slate-200 p-1 rounded-xl">
+            {[
+              { id: 'create', label: 'Create Workspace' },
+              { id: 'inventory', label: 'Inventory' },
+              { id: 'analytics', label: 'Analytics' }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setProTab(tab.id)}
+                className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${
+                  proTab === tab.id ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Pro Mode Content */}
+          <div className="bg-slate-900 text-white border border-slate-800 rounded-2xl p-6 text-center space-y-4 min-h-[320px] flex flex-col justify-center items-center">
+            {proTab === 'create' && (
+              <>
+                <div className="w-14 h-14 bg-slate-800 text-blue-400 rounded-2xl flex items-center justify-center text-2xl">
+                  🎨
+                </div>
+                <h3 className="font-bold text-base">Pro Create Workspace</h3>
+                <p className="text-xs text-slate-400 max-w-xs">Timeline controls, multi-layer video frames, & AI background tools.</p>
+                <div className="pt-2 flex gap-2">
+                  <button className="bg-blue-600 text-white font-bold text-xs px-4 py-2 rounded-xl">
+                    New Project
+                  </button>
+                  <button className="bg-slate-800 text-slate-300 font-bold text-xs px-4 py-2 rounded-xl">
+                    AI Auto-Enhance
+                  </button>
+                </div>
+              </>
+            )}
+
+            {proTab === 'inventory' && (
+              <>
+                <div className="w-14 h-14 bg-slate-800 text-amber-400 rounded-2xl flex items-center justify-center text-2xl">
+                  📦
+                </div>
+                <h3 className="font-bold text-base">Pro Asset Inventory</h3>
+                <p className="text-xs text-slate-400 max-w-xs">Access your downloaded pro assets, custom overlays, and AI models.</p>
+                <span className="text-[10px] bg-slate-800 text-amber-300 px-3 py-1 rounded-full">
+                  Contains Free & Pro AI Modules
+                </span>
+              </>
+            )}
+
+            {proTab === 'analytics' && (
+              <>
+                <div className="w-14 h-14 bg-slate-800 text-emerald-400 rounded-2xl flex items-center justify-center text-2xl">
+                  📊
+                </div>
+                <h3 className="font-bold text-base">Creator Analytics</h3>
+                <p className="text-xs text-slate-400 max-w-xs">Track template performance, render times, and AI generation metrics.</p>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 4. SHOP VIEW */}
+      {currentView === 'shop' && (
+        <div className="p-4 space-y-4 flex-1">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+            <button 
+              onClick={() => setCurrentView('home')} 
+              className="text-xs font-bold text-slate-600 hover:text-slate-900"
+            >
+              ← Back Home
+            </button>
+            <span className="text-xs font-extrabold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-full">
+              FrameCraft Shop
+            </span>
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 shadow-sm">
+            <div className="border border-blue-100 bg-blue-50/50 p-4 rounded-xl space-y-2">
+              <span className="text-[10px] font-bold bg-blue-600 text-white px-2 py-0.5 rounded">PRO PLAN</span>
+              <h3 className="font-
