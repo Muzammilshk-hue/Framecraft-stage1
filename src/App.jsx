@@ -256,7 +256,7 @@ export default function App() {
             ))}
           </div>
 
-          {/* Family Mode Content (Peaceful, No Pro/Inventory/Analytics) */}
+          {/* Family Mode Content */}
           <div className="bg-white border border-emerald-100 rounded-2xl p-6 text-center space-y-4 shadow-sm min-h-[300px] flex flex-col justify-center items-center">
             {familyTab === 'create' && (
               <>
@@ -309,7 +309,7 @@ export default function App() {
             </span>
           </div>
 
-          {/* Professional Mode Sub-Tabs (Inventory & Analytics belong ONLY here) */}
+          {/* Professional Mode Sub-Tabs */}
           <div className="flex bg-slate-200 p-1 rounded-xl">
             {[
               { id: 'create', label: 'Create Workspace' },
@@ -392,4 +392,5 @@ export default function App() {
           <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 shadow-sm">
             <div className="border border-blue-100 bg-blue-50/50 p-4 rounded-xl space-y-2">
               <span className="text-[10px] font-bold bg-blue-600 text-white px-2 py-0.5 rounded">PRO PLAN</span>
-              <h3 className="font-
+              <h3 className="font-bold text-slate-900">FrameCraft Lifetime Pro</h3>
+              <p className="te
