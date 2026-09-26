@@ -270,110 +270,6 @@ export default function App() {
                 </button>
               </>
             )}
-
-            {familyTab === 'saved' && (
-              <>
-                <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-2xl">
-                  📁
-                </div>
-                <h3 className="font-bold text-slate-800">Your Saved Memories</h3>
-                <p className="text-xs text-slate-500">No saved family photos yet.</p>
-              </>
-            )}
-
-            {familyTab === 'export' && (
-              <>
-                <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-2xl">
-                  📲
-                </div>
-                <h3 className="font-bold text-slate-800">Export Directly to Phone Gallery</h3>
-                <p className="text-xs text-slate-500">High quality, watermark-free exports for family projects.</p>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* 3. PROFESSIONAL MODE SUB-VIEW */}
-      {currentView === 'pro' && (
-        <div className="p-4 space-y-4 flex-1">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-200">
-            <button 
-              onClick={() => setCurrentView('home')} 
-              className="text-xs font-bold text-slate-600 flex items-center space-x-1 hover:text-slate-900"
-            >
-              <span>← Back Home</span>
-            </button>
-            <span className="text-xs font-extrabold text-white bg-slate-900 px-2.5 py-1 rounded-full flex items-center space-x-1">
-              <span>⚡ Pro Mode</span>
-            </span>
-          </div>
-
-          {/* Professional Mode Sub-Tabs */}
-          <div className="flex bg-slate-200 p-1 rounded-xl">
-            {[
-              { id: 'create', label: 'Create Workspace' },
-              { id: 'inventory', label: 'Inventory' },
-              { id: 'analytics', label: 'Analytics' }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setProTab(tab.id)}
-                className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                  proTab === tab.id ? 'bg-slate-900 text-white shadow-sm' : 'text-slate-600'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Pro Mode Content */}
-          <div className="bg-slate-900 text-white border border-slate-800 rounded-2xl p-6 text-center space-y-4 min-h-[320px] flex flex-col justify-center items-center">
-            {proTab === 'create' && (
-              <>
-                <div className="w-14 h-14 bg-slate-800 text-blue-400 rounded-2xl flex items-center justify-center text-2xl">
-                  🎨
-                </div>
-                <h3 className="font-bold text-base">Pro Create Workspace</h3>
-                <p className="text-xs text-slate-400 max-w-xs">Timeline controls, multi-layer video frames, & AI background tools.</p>
-                <div className="pt-2 flex gap-2">
-                  <button className="bg-blue-600 text-white font-bold text-xs px-4 py-2 rounded-xl">
-                    New Project
-                  </button>
-                  <button className="bg-slate-800 text-slate-300 font-bold text-xs px-4 py-2 rounded-xl">
-                    AI Auto-Enhance
-                  </button>
-                </div>
-              </>
-            )}
-
-            {proTab === 'inventory' && (
-              <>
-                <div className="w-14 h-14 bg-slate-800 text-amber-400 rounded-2xl flex items-center justify-center text-2xl">
-                  📦
-                </div>
-                <h3 className="font-bold text-base">Pro Asset Inventory</h3>
-                <p className="text-xs text-slate-400 max-w-xs">Access your downloaded pro assets, custom overlays, and AI models.</p>
-                <span className="text-[10px] bg-slate-800 text-amber-300 px-3 py-1 rounded-full">
-                  Contains Free & Pro AI Modules
-                </span>
-              </>
-            )}
-
-            {proTab === 'analytics' && (
-              <>
-                <div className="w-14 h-14 bg-slate-800 text-emerald-400 rounded-2xl flex items-center justify-center text-2xl">
-                  📊
-                </div>
-                <h3 className="font-bold text-base">Creator Analytics</h3>
-                <p className="text-xs text-slate-400 max-w-xs">Track template performance, render times, and AI generation metrics.</p>
-              </>
-            )}
-          </div>
-        </div>
-      )}
-
       {/* 4. SHOP VIEW */}
       {currentView === 'shop' && (
         <div className="p-4 space-y-4 flex-1">
@@ -393,4 +289,110 @@ export default function App() {
             <div className="border border-blue-100 bg-blue-50/50 p-4 rounded-xl space-y-2">
               <span className="text-[10px] font-bold bg-blue-600 text-white px-2 py-0.5 rounded">PRO PLAN</span>
               <h3 className="font-bold text-slate-900">FrameCraft Lifetime Pro</h3>
-              <p className="te
+              <p className="text-xs text-slate-600">Unlock all professional editing features, unlimited AI models, and priority rendering.</p>
+              <div className="pt-2 flex items-center justify-between">
+                <span className="text-xl font-extrabold text-blue-600">₹25 <span className="text-xs font-normal text-slate-500">one-time</span></span>
+                <button 
+                  onClick={() => setShowPaymentModal(true)}
+                  className="bg-blue-600 text-white font-bold text-xs px-4 py-2 rounded-xl"
+                >
+                  Get Pro
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PROFILE VIEW */}
+      {currentView === 'profile' && (
+        <div className="p-4 space-y-4 flex-1">
+          <button onClick={() => setCurrentView('home')} className="text-xs font-bold text-slate-600">← Back Home</button>
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 text-center space-y-3">
+            <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xl mx-auto">
+              FC
+            </div>
+            <h3 className="font-bold text-slate-900">User Account</h3>
+            <span className="inline-block text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full">
+              Free Plan User
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* SETTINGS VIEW */}
+      {currentView === 'settings' && (
+        <div className="p-4 space-y-4 flex-1">
+          <button onClick={() => setCurrentView('home')} className="text-xs font-bold text-slate-600">← Back Home</button>
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 space-y-3">
+            <h3 className="font-bold text-sm text-slate-900">Settings</h3>
+            <div className="space-y-2 text-xs text-slate-600">
+              <div className="p-2.5 bg-slate-50 rounded-lg flex justify-between">
+                <span>App Version</span>
+                <span className="font-bold text-slate-800">Stage 1.0</span>
+              </div>
+              <div className="p-2.5 bg-slate-50 rounded-lg flex justify-between">
+                <span>Database Sync</span>
+                <span className="font-bold text-emerald-600">Connected</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PRESERVED STAGE 1 UPI PAYMENT MODAL */}
+      {showPaymentModal && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl p-5 max-w-xs w-full space-y-4 shadow-2xl relative">
+            <button 
+              onClick={() => { setShowPaymentModal(false); setPaymentStatus(''); }}
+              className="absolute top-3 right-3 text-slate-400 hover:text-slate-600 text-sm font-bold"
+            >
+              ✕
+            </button>
+
+            <div className="text-center space-y-1">
+              <span className="text-xs font-bold text-blue-600 uppercase">Upgrade to Pro</span>
+              <h3 className="font-bold text-lg text-slate-900">Pay ₹25 via UPI</h3>
+              <p className="text-xs text-slate-500">Enter your UPI UTR/Transaction number after payment.</p>
+            </div>
+
+            {paymentStatus === 'success' ? (
+              <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-3 rounded-xl text-center space-y-1">
+                <span className="text-xl">✅</span>
+                <p className="font-bold text-xs">UTR Submitted!</p>
+                <p className="text-[10px] text-emerald-600">Verification in progress via Supabase.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleUtrSubmit} className="space-y-3">
+                <div className="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">UPI ID</span>
+                  <p className="font-mono text-xs font-bold text-slate-800 select-all">framecraft@upi</p>
+                </div>
+
+                <input
+                  type="text"
+                  placeholder="Enter 12-digit UTR Number"
+                  value={utrNumber}
+                  onChange={(e) => setUtrNumber(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                  required
+                />
+
+                <button
+                  type="submit"
+                  disabled={paymentStatus === 'verifying'}
+                  className="w-full bg-blue-600 text-white font-bold text-xs py-2.5 rounded-xl hover:bg-blue-700 transition-colors"
+                >
+                  {paymentStatus === 'verifying' ? 'Verifying...' : 'Submit UTR Verification'}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+          }
+          
