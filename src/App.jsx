@@ -5,15 +5,16 @@ function App() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(null); // null, 'verifying', 'success'
   const [utrNumber, setUtrNumber] = useState('');
-  
+  const [claimedSpots, setClaimedSpots] = useState(0);
+
   // New UI state for Media Type Selector
   const [mediaType, setMediaType] = useState('video'); // 'video' or 'photo'
-
   // Preserved Payment Handler
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
     setPaymentStatus('verifying');
     setTimeout(() => {
+    setClaimedSpots(prev => prev + 1);
       setPaymentStatus('success');
       setTimeout(() => {
         setShowPaymentModal(false);
@@ -58,7 +59,7 @@ function App() {
           <p className="text-xs text-gray-400 tracking-widest mt-1">T E X T</p>
         </div>
 
-        {/* 3. HERO CARD: FOUNDING OFFER */}
+                        {/* 3. HERO CARD: FOUNDING OFFER */}
         <div className="border border-[#e9e8e2] rounded-2xl bg-white p-5 shadow-sm relative">
           <div className="flex justify-between items-start mb-2">
             <div className="text-xs font-semibold text-[#4a5d4e] flex items-center">
@@ -72,31 +73,31 @@ function App() {
 
           <div className="flex justify-between items-center mt-4">
             <div>
-              <div className="text-3xl font-bold text-[#2c3329]">#1769 <span className="text-lg text-gray-400 font-normal">/ 2500</span></div>
+              {/* Dynamic Spot Number Starting at #1 */}
+              <div className="text-3xl font-bold text-[#2c3329]">#{claimedSpots + 1} <span className="text-lg text-gray-400 font-normal">/ 2500</span></div>
               <div className="text-sm font-medium mt-1">₹25 <span className="text-gray-500">— Founding Subscription</span></div>
               <p className="text-[10px] text-gray-400 mt-2">Be one of the first 2,500 FrameCraft subscribers.</p>
             </div>
-            {/* BADGE PLACEHOLDER */}
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#d4af37] to-[#8a6721] p-[2px] shadow-md flex-shrink-0">
-              <div className="w-full h-full bg-[#1e3423] rounded-full flex flex-col items-center justify-center border border-[#d4af37]">
-                <span className="text-[8px] text-[#d4af37] font-bold">FRAMECRAFT</span>
-                <span className="text-white font-bold text-sm">#1769</span>
-                <span className="text-[6px] text-[#d4af37]">1/2500</span>
-              </div>
+            
+            {/* Sleek Circular Badge */}
+            <div className="w-24 h-24 rounded-full bg-[#1a2e20] border-[3px] border-[#cda851] shadow-lg flex flex-col items-center justify-center flex-shrink-0">
+              <span className="text-[9px] text-[#cda851] font-semibold tracking-wider mb-0.5">FRAMECRAFT</span>
+              <span className="text-white font-bold text-2xl tracking-tight">#{claimedSpots + 1}</span>
+              <span className="text-[10px] text-[#cda851] mt-0.5">1/2500</span>
             </div>
           </div>
 
           <div className="flex justify-between items-center mt-6 pt-4 border-t border-[#e9e8e2]">
              <div className="flex space-x-4">
-                <div className="text-[10px] text-gray-500 flex flex-col items-center"><span className="text-[#2c3329] font-bold">#1769</span> Founding Badge</div>
+                <div className="text-[10px] text-gray-500 flex flex-col items-center"><span className="text-[#2c3329] font-bold">#{claimedSpots + 1}</span> Founding Badge</div>
                 <div className="text-[10px] text-gray-500 flex flex-col items-center"><span className="text-[#2c3329] font-bold flex items-center">🔒 ₹25</span> Price Locked</div>
              </div>
+             {/* Dynamic Spots Remaining */}
              <div className="text-[10px] border border-gray-200 px-2 py-1 rounded text-gray-500 bg-gray-50">
-               732 spots remaining
+               {2500 - claimedSpots} spots remaining
              </div>
           </div>
 
-          {/* PRESERVED: Trigger Payment Modal */}
           <button 
             onClick={() => setShowPaymentModal(true)}
             className="w-full mt-4 bg-[#4a5d4e] text-white py-3 rounded-lg font-bold text-xs tracking-widest uppercase hover:bg-[#3f4f42] transition-colors"
@@ -107,6 +108,13 @@ function App() {
             After 2,500 founding spots are claimed, Stage 2 pricing begins.<br/>Founding price terms apply as stated in the subscription terms.
           </p>
         </div>
+        
+        
+            
+        
+
+          
+        
 
         {/* 4. MEDIA SELECTOR (VIDEO / PHOTO) */}
         <div className="flex bg-white border border-[#e9e8e2] rounded-full mt-6 p-1 shadow-sm">
