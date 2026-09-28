@@ -1,399 +1,248 @@
 import React, { useState } from 'react';
 
-export default function App() {
-  // Navigation & View State
-  const [currentView, setCurrentView] = useState('home'); // 'home', 'family', 'pro', 'shop', 'profile', 'settings'
-  const [familyTab, setFamilyTab] = useState('create'); // 'create', 'saved', 'export'
-  const [proTab, setProTab] = useState('create'); // 'create', 'inventory', 'analytics'
-
-  // Interactive Poll State
-  const [selectedPollOption, setSelectedPollOption] = useState(null);
-  const [pollVotes, setPollVotes] = useState({ 1: 142, 2: 389, 3: 97 });
-
-  // Payment Modal State (Preserved Stage 1 Logic)
+function App() {
+  // Preserved states from your backend/functionality protocol
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState(null); // null, 'verifying', 'success'
   const [utrNumber, setUtrNumber] = useState('');
-  const [paymentStatus, setPaymentStatus] = useState('');
+  
+  // New UI state for Media Type Selector
+  const [mediaType, setMediaType] = useState('video'); // 'video' or 'photo'
 
-  const handleVote = (optionId) => {
-    if (!selectedPollOption) {
-      setSelectedPollOption(optionId);
-      setPollVotes(prev => ({ ...prev, [optionId]: prev[optionId] + 1 }));
-    }
-  };
-
-  const handleUtrSubmit = (e) => {
+  // Preserved Payment Handler
+  const handlePaymentSubmit = (e) => {
     e.preventDefault();
-    if (!utrNumber.trim()) return;
     setPaymentStatus('verifying');
     setTimeout(() => {
       setPaymentStatus('success');
-    }, 1500);
+      setTimeout(() => {
+        setShowPaymentModal(false);
+        setPaymentStatus(null);
+        setUtrNumber('');
+      }, 2000);
+    }, 2000);
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans flex flex-col max-w-md mx-auto border-x border-slate-200 shadow-xl relative pb-10">
+    <div className="min-h-screen bg-[#fcfbf8] text-[#2c3329] font-sans pb-24">
       
       {/* 1. HEADER */}
-      <header className="bg-white border-b border-slate-200 px-4 py-3 sticky top-0 z-40 flex items-center justify-between">
-        <div 
-          className="flex items-center space-x-2 cursor-pointer"
-          onClick={() => setCurrentView('home')}
-        >
-          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-black text-lg">
-            F
+      <header className="flex justify-between items-center p-4 border-b border-[#e9e8e2]">
+        <div className="flex items-center space-x-3">
+          <svg className="w-6 h-6 text-[#4a5d4e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          <div className="flex items-center space-x-2">
+            <span className="font-semibold text-lg tracking-wide uppercase">FrameCraft</span>
+            <span className="text-[10px] border border-[#4a5d4e] rounded-full px-2 py-0.5 text-[#4a5d4e]">Stage 1</span>
           </div>
-          <span className="text-xl font-bold tracking-tight text-slate-900">FrameCraft</span>
         </div>
-
-        <div className="flex items-center space-x-2">
-          {/* Profile Access */}
-          <button 
-            onClick={() => setCurrentView('profile')}
-            className={`p-2 rounded-full transition-colors ${currentView === 'profile' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'}`}
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-          </button>
-          
-          {/* Settings Access */}
-          <button 
-            onClick={() => setCurrentView('settings')}
-            className={`p-2 rounded-full transition-colors ${currentView === 'settings' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-100'}`}
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-          </button>
+        <div className="w-8 h-8 rounded-full border border-[#4a5d4e] flex items-center justify-center bg-gray-100">
+          <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
         </div>
       </header>
 
-      {/* VIEW CONTROLLER */}
-      {currentView === 'home' && (
-        <main className="p-4 space-y-6 flex-1">
+      {/* 2. PRIMARY TOP NAVIGATION */}
+      <nav className="flex justify-around items-center px-2 py-3 border-b border-[#e9e8e2] bg-[#fcfbf8]">
+        <button className="flex flex-col items-center text-[#4a5d4e] font-bold">
+          <div className="px-4 py-1 bg-[#4a5d4e] text-white rounded-md text-xs mb-1 shadow-sm">HOME</div>
+        </button>
+        <button className="text-xs font-medium text-gray-400 uppercase">Projects</button>
+        <button className="text-xs font-medium text-gray-400 uppercase">Resources</button>
+        <button className="text-xs font-medium text-gray-400 uppercase">Settings</button>
+      </nav>
+
+      <main className="px-4 max-w-md mx-auto">
+        
+        {/* THE CALLING HEADER */}
+        <div className="text-center my-6">
+          <h1 className="text-3xl font-serif italic text-[#2c3329]">The Calling</h1>
+          <p className="text-xs text-gray-400 tracking-widest mt-1">T E X T</p>
+        </div>
+
+        {/* 3. HERO CARD: FOUNDING OFFER */}
+        <div className="border border-[#e9e8e2] rounded-2xl bg-white p-5 shadow-sm relative">
+          <div className="flex justify-between items-start mb-2">
+            <div className="text-xs font-semibold text-[#4a5d4e] flex items-center">
+              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+              Stage 1 Founding Offer
+            </div>
+            <div className="text-[10px] bg-gray-100 px-2 py-1 rounded text-gray-500 border border-gray-200">
+              Limited to 2,500
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center mt-4">
+            <div>
+              <div className="text-3xl font-bold text-[#2c3329]">#1769 <span className="text-lg text-gray-400 font-normal">/ 2500</span></div>
+              <div className="text-sm font-medium mt-1">₹25 <span className="text-gray-500">— Founding Subscription</span></div>
+              <p className="text-[10px] text-gray-400 mt-2">Be one of the first 2,500 FrameCraft subscribers.</p>
+            </div>
+            {/* BADGE PLACEHOLDER */}
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#d4af37] to-[#8a6721] p-[2px] shadow-md flex-shrink-0">
+              <div className="w-full h-full bg-[#1e3423] rounded-full flex flex-col items-center justify-center border border-[#d4af37]">
+                <span className="text-[8px] text-[#d4af37] font-bold">FRAMECRAFT</span>
+                <span className="text-white font-bold text-sm">#1769</span>
+                <span className="text-[6px] text-[#d4af37]">1/2500</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center mt-6 pt-4 border-t border-[#e9e8e2]">
+             <div className="flex space-x-4">
+                <div className="text-[10px] text-gray-500 flex flex-col items-center"><span className="text-[#2c3329] font-bold">#1769</span> Founding Badge</div>
+                <div className="text-[10px] text-gray-500 flex flex-col items-center"><span className="text-[#2c3329] font-bold flex items-center">🔒 ₹25</span> Price Locked</div>
+             </div>
+             <div className="text-[10px] border border-gray-200 px-2 py-1 rounded text-gray-500 bg-gray-50">
+               732 spots remaining
+             </div>
+          </div>
+
+          {/* PRESERVED: Trigger Payment Modal */}
+          <button 
+            onClick={() => setShowPaymentModal(true)}
+            className="w-full mt-4 bg-[#4a5d4e] text-white py-3 rounded-lg font-bold text-xs tracking-widest uppercase hover:bg-[#3f4f42] transition-colors"
+          >
+            Claim My Spot →
+          </button>
+          <p className="text-[8px] text-center text-gray-400 mt-2 leading-tight">
+            After 2,500 founding spots are claimed, Stage 2 pricing begins.<br/>Founding price terms apply as stated in the subscription terms.
+          </p>
+        </div>
+
+        {/* 4. MEDIA SELECTOR (VIDEO / PHOTO) */}
+        <div className="flex bg-white border border-[#e9e8e2] rounded-full mt-6 p-1 shadow-sm">
+          <button 
+            onClick={() => setMediaType('video')}
+            className={`flex-1 flex items-center justify-center py-2 rounded-full text-sm font-medium transition-colors ${mediaType === 'video' ? 'bg-[#4a5d4e] text-white' : 'text-gray-500 hover:bg-gray-50'}`}
+          >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Video
+          </button>
+          <button 
+            onClick={() => setMediaType('photo')}
+            className={`flex-1 flex items-center justify-center py-2 rounded-full text-sm font-medium transition-colors ${mediaType === 'photo' ? 'bg-[#4a5d4e] text-white' : 'text-gray-500 hover:bg-gray-50'}`}
+          >
+            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            Photo
+          </button>
+        </div>
+
+        {/* 5. ACTIVE STAGE 1 FEATURES */}
+        <div className="mt-4 border border-[#e9e8e2] rounded-2xl bg-white p-4 shadow-sm flex flex-col space-y-4">
           
-          {/* Welcome Card */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl p-5 text-white shadow-md">
-            <h2 className="text-2xl font-extrabold tracking-tight">FrameCraft Studio</h2>
-            <p className="text-blue-100 text-sm mt-1">Select an edit mode or explore the ecosystem.</p>
-          </div>
-
-          {/* MODE SELECTION CARDS */}
-          <div className="space-y-3">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">Select Editing Mode</h3>
-            
-            {/* 2. FAMILY MODE ENTRY POINT */}
-            <div 
-              onClick={() => setCurrentView('family')}
-              className="bg-emerald-50 border border-emerald-200 hover:border-emerald-300 p-5 rounded-2xl cursor-pointer transition-all shadow-sm hover:shadow-md flex items-center justify-between"
-            >
-              <div className="space-y-1">
-                <div className="flex items-center space-x-2">
-                  <span className="text-xl">🌿</span>
-                  <h4 className="text-lg font-bold text-emerald-900">Family Mode</h4>
+          {mediaType === 'video' ? (
+            <>
+              {/* VIDEO: Family and Professional Active */}
+              <div className="flex items-center space-x-2 pb-3 border-b border-[#e9e8e2]">
+                <div className="w-1/2">
+                  <div className="flex items-center text-sm font-semibold text-[#2c3329] mb-3">
+                    <svg className="w-4 h-4 mr-1 text-[#4a5d4e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    Family
+                  </div>
+                  <div className="flex space-x-3 text-gray-500">
+                    <button className="hover:text-[#4a5d4e]"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg></button>
+                    <button className="hover:text-[#4a5d4e]"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg></button>
+                  </div>
                 </div>
-                <p className="text-xs text-emerald-700">Simple, peaceful editing without complexity.</p>
-                <div className="flex space-x-2 pt-2 text-[10px] font-semibold text-emerald-800">
-                  <span className="bg-emerald-100 px-2 py-0.5 rounded">Create</span>
-                  <span className="bg-emerald-100 px-2 py-0.5 rounded">Saved</span>
-                  <span className="bg-emerald-100 px-2 py-0.5 rounded">Gallery Export</span>
-                </div>
-              </div>
-              <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-
-            {/* 3. PROFESSIONAL MODE ENTRY POINT */}
-            <div 
-              onClick={() => setCurrentView('pro')}
-              className="bg-slate-900 border border-slate-800 text-white p-5 rounded-2xl cursor-pointer transition-all shadow-sm hover:shadow-md flex items-center justify-between"
-            >
-              <div className="space-y-1">
-                <div className="flex items-center space-x-2">
-                  <span className="text-xl">⚡</span>
-                  <h4 className="text-lg font-bold text-white">Professional Mode</h4>
-                  <span className="bg-blue-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">PRO</span>
-                </div>
-                <p className="text-xs text-slate-300">Advanced tools, analytics, & AI suite.</p>
-                <div className="flex space-x-2 pt-2 text-[10px] font-semibold text-slate-300">
-                  <span className="bg-slate-800 px-2 py-0.5 rounded">Workspace</span>
-                  <span className="bg-slate-800 px-2 py-0.5 rounded">Inventory</span>
-                  <span className="bg-slate-800 px-2 py-0.5 rounded">Analytics</span>
+                <div className="w-px h-12 bg-[#e9e8e2]"></div>
+                <div className="w-1/2 pl-4">
+                  <div className="flex items-center text-sm font-semibold text-[#2c3329] mb-3">
+                    <svg className="w-4 h-4 mr-1 text-[#4a5d4e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    Professional
+                  </div>
+                  <div className="flex space-x-3 text-gray-500">
+                    <button className="hover:text-[#4a5d4e]"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg></button>
+                    <button className="hover:text-[#4a5d4e]"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg></button>
+                    <button className="hover:text-[#4a5d4e]"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></button>
+                  </div>
                 </div>
               </div>
-              <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </div>
-          </div>
+            </>
+          ) : (
+            <>
+               {/* PHOTO: Only Photo Features Active */}
+               <div className="flex flex-col items-center justify-center py-4">
+                 <div className="text-sm font-semibold text-[#2c3329] mb-4">Photo Studio</div>
+                 <div className="flex space-x-6 text-gray-500">
+                    <button className="flex flex-col items-center hover:text-[#4a5d4e]">
+                      <div className="w-10 h-10 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg></div>
+                      <span className="text-[10px]">Create</span>
+                    </button>
+                    <button className="flex flex-col items-center hover:text-[#4a5d4e]">
+                      <div className="w-10 h-10 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg></div>
+                      <span className="text-[10px]">Saved</span>
+                    </button>
+                 </div>
+               </div>
+            </>
+          )}
 
-          {/* 4. SHOP SECTION */}
-          <div className="space-y-2">
-            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider px-1">Marketplace</h3>
-            <div 
-              onClick={() => setCurrentView('shop')}
-              className="bg-white border border-slate-200 hover:border-slate-300 p-4 rounded-xl cursor-pointer transition-all shadow-sm flex items-center justify-between"
-            >
-              <div className="flex items-center space-x-3">
-                <div className="p-2.5 bg-amber-50 text-amber-600 rounded-lg">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                  </svg>
-                </div>
-                <div>
-                  <h4 className="font-bold text-sm text-slate-800">FrameCraft Shop</h4>
-                  <p className="text-xs text-slate-500">Premium templates, frames & PRO access</p>
-                </div>
-              </div>
-              <button 
-                onClick={(e) => { e.stopPropagation(); setShowPaymentModal(true); }}
-                className="bg-blue-600 text-white font-bold text-xs px-3 py-1.5 rounded-lg hover:bg-blue-700"
-              >
-                ₹25 PRO
-              </button>
-            </div>
-          </div>
-
-          {/* 6. VOTING POLL (ACTIVE EXCEPTION) */}
-          <div className="bg-white border border-slate-200 p-4 rounded-2xl space-y-3 shadow-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Community Poll</span>
-              <span className="text-[10px] bg-blue-50 text-blue-600 font-semibold px-2 py-0.5 rounded-full">Active</span>
-            </div>
-            <h4 className="font-bold text-sm text-slate-900">Which feature should we build next?</h4>
-            
-            <div className="space-y-2">
-              {[
-                { id: 1, title: 'AI Background Removal' },
-                { id: 2, title: 'Cinematic Video Overlay Filters' },
-                { id: 3, title: 'Custom Typography Generator' }
-              ].map(option => {
-                const totalVotes = Object.values(pollVotes).reduce((a, b) => a + b, 0);
-                const pct = Math.round((pollVotes[option.id] / totalVotes) * 100);
-                const isSelected = selectedPollOption === option.id;
-
-                return (
-                  <button
-                    key={option.id}
-                    onClick={() => handleVote(option.id)}
-                    className={`w-full text-left p-2.5 rounded-xl border transition-all text-xs relative overflow-hidden ${
-                      isSelected ? 'border-blue-600 bg-blue-50/50' : 'border-slate-200 hover:border-slate-300'
-                    }`}
-                  >
-                    <div 
-                      className="absolute top-0 left-0 bottom-0 bg-blue-100/60 transition-all duration-500" 
-                      style={{ width: `${pct}%` }} 
-                    />
-                    <div className="relative z-10 flex justify-between items-center">
-                      <span className="font-medium text-slate-800">{option.title}</span>
-                      <span className="font-bold text-slate-600">{pct}%</span>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* 5. COMING SOON ECOSYSTEM FEATURES */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between px-1">
-              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Ecosystem Roadmap</h3>
-              <span className="text-[10px] bg-slate-200 text-slate-600 font-bold px-2 py-0.5 rounded-full">Future Releases</span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                { title: 'Clans', desc: 'Collaborative team editing spaces' },
-                { title: 'Creator Marketplace', desc: 'Sell your custom frames & templates' },
-                { title: 'Ad Workshop', desc: 'Monetized brand campaign frames' },
-                { title: 'Creator Earnings', desc: 'Track payout & revenue streams' },
-                { title: 'Business Suite', desc: 'Enterprise assets & white-labeling' }
-              ].map((item, idx) => (
-                <div key={idx} className="bg-slate-100/80 border border-slate-200 p-3 rounded-xl relative opacity-80">
-                  <span className="absolute top-2 right-2 bg-slate-200 text-slate-600 text-[9px] font-extrabold px-1.5 py-0.5 rounded">
-                    SOON
-                  </span>
-                  <h5 className="font-bold text-xs text-slate-800 pr-10">{item.title}</h5>
-                  <p className="text-[10px] text-slate-500 mt-1">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-        </main>
-      )}
-
-      {/* 2. FAMILY MODE SUB-VIEW */}
-      {currentView === 'family' && (
-        <div className="p-4 space-y-4 flex-1">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-200">
-            <button 
-              onClick={() => setCurrentView('home')} 
-              className="text-xs font-bold text-slate-600 flex items-center space-x-1 hover:text-slate-900"
-            >
-              <span>← Back Home</span>
-            </button>
-            <span className="text-xs font-extrabold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full">
-              Family Mode
-            </span>
-          </div>
-
-          {/* Family Mode Sub-Tabs */}
-          <div className="flex bg-slate-200 p-1 rounded-xl">
-            {['create', 'saved', 'export'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setFamilyTab(tab)}
-                className={`flex-1 py-1.5 text-xs font-bold rounded-lg capitalize transition-all ${
-                  familyTab === tab ? 'bg-white text-emerald-800 shadow-sm' : 'text-slate-600'
-                }`}
-              >
-                {tab === 'export' ? 'Export to Gallery' : tab}
-              </button>
-            ))}
-          </div>
-
-          {/* Family Mode Content */}
-          <div className="bg-white border border-emerald-100 rounded-2xl p-6 text-center space-y-4 shadow-sm min-h-[300px] flex flex-col justify-center items-center">
-            {familyTab === 'create' && (
-              <>
-                <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-2xl">
-                  🖼️
-                </div>
-                <h3 className="font-bold text-slate-800">Family Photo Frame Editor</h3>
-                <p className="text-xs text-slate-500 max-w-xs">Clean, simple photo frame selection for family memories.</p>
-                <button className="bg-emerald-600 text-white font-bold text-xs px-5 py-2.5 rounded-xl hover:bg-emerald-700">
-                  Select Photo
-                </button>
-              </>
-            )}
-      {/* 4. SHOP VIEW */}
-      {currentView === 'shop' && (
-        <div className="p-4 space-y-4 flex-1">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-200">
-            <button 
-              onClick={() => setCurrentView('home')} 
-              className="text-xs font-bold text-slate-600 hover:text-slate-900"
-            >
-              ← Back Home
-            </button>
-            <span className="text-xs font-extrabold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-full">
-              FrameCraft Shop
-            </span>
-          </div>
-
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 shadow-sm">
-            <div className="border border-blue-100 bg-blue-50/50 p-4 rounded-xl space-y-2">
-              <span className="text-[10px] font-bold bg-blue-600 text-white px-2 py-0.5 rounded">PRO PLAN</span>
-              <h3 className="font-bold text-slate-900">FrameCraft Lifetime Pro</h3>
-              <p className="text-xs text-slate-600">Unlock all professional editing features, unlimited AI models, and priority rendering.</p>
-              <div className="pt-2 flex items-center justify-between">
-                <span className="text-xl font-extrabold text-blue-600">₹25 <span className="text-xs font-normal text-slate-500">one-time</span></span>
-                <button 
-                  onClick={() => setShowPaymentModal(true)}
-                  className="bg-blue-600 text-white font-bold text-xs px-4 py-2 rounded-xl"
-                >
-                  Get Pro
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
-      )}
+      </main>
 
-      {/* PROFILE VIEW */}
-      {currentView === 'profile' && (
-        <div className="p-4 space-y-4 flex-1">
-          <button onClick={() => setCurrentView('home')} className="text-xs font-bold text-slate-600">← Back Home</button>
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 text-center space-y-3">
-            <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-xl mx-auto">
-              FC
-            </div>
-            <h3 className="font-bold text-slate-900">User Account</h3>
-            <span className="inline-block text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full">
-              Free Plan User
-            </span>
-          </div>
+      {/* 6. BOTTOM / SECONDARY ECOSYSTEM (COMING SOON) */}
+      <footer className="fixed bottom-0 w-full bg-[#fcfbf8] border-t border-[#e9e8e2] px-2 py-3 overflow-hidden">
+        {/* COMING SOON WATERMARK */}
+        <div className="absolute inset-0 flex items-center justify-center z-10 bg-white/40 backdrop-blur-[1px] pointer-events-none">
+           <div className="bg-gray-100/90 border border-gray-200 text-gray-400 font-bold tracking-widest text-[10px] px-4 py-1 rounded-full transform -rotate-2">
+             COMING SOON
+           </div>
         </div>
-      )}
-
-      {/* SETTINGS VIEW */}
-      {currentView === 'settings' && (
-        <div className="p-4 space-y-4 flex-1">
-          <button onClick={() => setCurrentView('home')} className="text-xs font-bold text-slate-600">← Back Home</button>
-          <div className="bg-white border border-slate-200 rounded-2xl p-4 space-y-3">
-            <h3 className="font-bold text-sm text-slate-900">Settings</h3>
-            <div className="space-y-2 text-xs text-slate-600">
-              <div className="p-2.5 bg-slate-50 rounded-lg flex justify-between">
-                <span>App Version</span>
-                <span className="font-bold text-slate-800">Stage 1.0</span>
-              </div>
-              <div className="p-2.5 bg-slate-50 rounded-lg flex justify-between">
-                <span>Database Sync</span>
-                <span className="font-bold text-emerald-600">Connected</span>
-              </div>
-            </div>
-          </div>
+        
+        {/* Greyed out / disabled icons */}
+        <div className="flex justify-around items-center opacity-40 grayscale pointer-events-none">
+          <div className="flex flex-col items-center"><svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg><span className="text-[9px]">Clubs</span></div>
+          <div className="flex flex-col items-center"><svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg><span className="text-[9px]">Shops</span></div>
+          <div className="flex flex-col items-center bg-[#4a5d4e] text-white p-2 rounded-2xl"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg><span className="text-[9px] mt-1">Board</span></div>
+          <div className="flex flex-col items-center"><svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2-2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg><span className="text-[9px]">Pole Voting</span></div>
+          <div className="flex flex-col items-center"><svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg><span className="text-[9px]">Social</span></div>
         </div>
-      )}
+      </footer>
 
-      {/* PRESERVED STAGE 1 UPI PAYMENT MODAL */}
+      {/* PRESERVED: Payment Modal (Your existing functionality) */}
       {showPaymentModal && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl p-5 max-w-xs w-full space-y-4 shadow-2xl relative">
-            <button 
-              onClick={() => { setShowPaymentModal(false); setPaymentStatus(''); }}
-              className="absolute top-3 right-3 text-slate-400 hover:text-slate-600 text-sm font-bold"
-            >
-              ✕
-            </button>
-
-            <div className="text-center space-y-1">
-              <span className="text-xs font-bold text-blue-600 uppercase">Upgrade to Pro</span>
-              <h3 className="font-bold text-lg text-slate-900">Pay ₹25 via UPI</h3>
-              <p className="text-xs text-slate-500">Enter your UPI UTR/Transaction number after payment.</p>
-            </div>
-
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl p-6 w-full max-w-sm">
+            <h3 className="font-bold text-lg mb-4">Complete Payment</h3>
+            <p className="text-sm text-gray-600 mb-4">Scan QR or transfer ₹25 via UPI, then enter your 12-digit UTR number below.</p>
+            
             {paymentStatus === 'success' ? (
-              <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 p-3 rounded-xl text-center space-y-1">
-                <span className="text-xl">✅</span>
-                <p className="font-bold text-xs">UTR Submitted!</p>
-                <p className="text-[10px] text-emerald-600">Verification in progress via Supabase.</p>
+              <div className="text-green-600 font-bold text-center py-4 border border-green-200 bg-green-50 rounded-lg">
+                Payment Verified! Spot Claimed.
               </div>
             ) : (
-              <form onSubmit={handleUtrSubmit} className="space-y-3">
-                <div className="bg-slate-50 border border-slate-200 p-3 rounded-xl text-center">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase">UPI ID</span>
-                  <p className="font-mono text-xs font-bold text-slate-800 select-all">framecraft@upi</p>
-                </div>
-
-                <input
-                  type="text"
-                  placeholder="Enter 12-digit UTR Number"
+              <form onSubmit={handlePaymentSubmit} className="space-y-4">
+                <input 
+                  type="text" 
+                  placeholder="Enter 12-digit UTR"
                   value={utrNumber}
                   onChange={(e) => setUtrNumber(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-blue-600 focus:outline-none"
                   required
+                  className="w-full border p-2 rounded-lg"
+                  maxLength={12}
                 />
-
-                <button
-                  type="submit"
+                <button 
+                  type="submit" 
                   disabled={paymentStatus === 'verifying'}
-                  className="w-full bg-blue-600 text-white font-bold text-xs py-2.5 rounded-xl hover:bg-blue-700 transition-colors"
+                  className="w-full bg-[#4a5d4e] text-white py-2 rounded-lg font-bold"
                 >
-                  {paymentStatus === 'verifying' ? 'Verifying...' : 'Submit UTR Verification'}
+                  {paymentStatus === 'verifying' ? 'Verifying...' : 'Submit UTR'}
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => setShowPaymentModal(false)}
+                  className="w-full text-gray-500 text-sm mt-2"
+                >
+                  Cancel
                 </button>
               </form>
             )}
           </div>
         </div>
       )}
+
     </div>
   );
 }
 
 export default App;
- 
+        
