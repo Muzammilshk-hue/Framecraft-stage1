@@ -13,4 +13,4 @@ if (!url || !key) {
   throw new Error("Missing Supabase env vars");
 }
 
-export const supabase = createClient
+export const supabase = createClient(url, key);
