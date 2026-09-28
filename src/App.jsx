@@ -7,14 +7,15 @@ function App() {
   const [utrNumber, setUtrNumber] = useState('');
   const [claimedSpots, setClaimedSpots] = useState(0);
 
-  // New UI state for Media Type Selector
+  // UI state for Media Type Selector
   const [mediaType, setMediaType] = useState('video'); // 'video' or 'photo'
+
   // Preserved Payment Handler
   const handlePaymentSubmit = (e) => {
     e.preventDefault();
     setPaymentStatus('verifying');
     setTimeout(() => {
-    setClaimedSpots(prev => prev + 1);
+      setClaimedSpots(prev => prev + 1);
       setPaymentStatus('success');
       setTimeout(() => {
         setShowPaymentModal(false);
@@ -41,15 +42,24 @@ function App() {
         </div>
       </header>
 
-      {/* 2. PRIMARY TOP NAVIGATION */}
-      <nav className="flex justify-around items-center px-2 py-3 border-b border-[#e9e8e2] bg-[#fcfbf8]">
-        <button className="flex flex-col items-center text-[#4a5d4e] font-bold">
-          <div className="px-4 py-1 bg-[#4a5d4e] text-white rounded-md text-xs mb-1 shadow-sm">HOME</div>
-        </button>
-        <button className="text-xs font-medium text-gray-400 uppercase">Projects</button>
-        <button className="text-xs font-medium text-gray-400 uppercase">Resources</button>
-        <button className="text-xs font-medium text-gray-400 uppercase">Settings</button>
-      </nav>
+      {/* 2. TOP SECONDARY ECOSYSTEM NAV (GREY / COMING SOON - ALL UNIFORM) */}
+      <div className="relative border-b border-[#e9e8e2] bg-[#fcfbf8] py-3 px-2 overflow-hidden">
+        {/* COMING SOON WATERMARK */}
+        <div className="absolute inset-0 flex items-center justify-center z-10 bg-white/40 backdrop-blur-[1px] pointer-events-none">
+           <div className="bg-gray-100/90 border border-gray-200 text-gray-400 font-bold tracking-widest text-[10px] px-4 py-1 rounded-full transform -rotate-2">
+             COMING SOON
+           </div>
+        </div>
+        
+        {/* Greyed out / disabled icons (Board is now greyed out as well) */}
+        <div className="flex justify-around items-center opacity-40 grayscale pointer-events-none">
+          <div className="flex flex-col items-center"><svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg><span className="text-[9px]">Clubs</span></div>
+          <div className="flex flex-col items-center"><svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg><span className="text-[9px]">Shops</span></div>
+          <div className="flex flex-col items-center"><svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg><span className="text-[9px]">Board</span></div>
+          <div className="flex flex-col items-center"><svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2-2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg><span className="text-[9px]">Pole Voting</span></div>
+          <div className="flex flex-col items-center"><svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg><span className="text-[9px]">Social</span></div>
+        </div>
+      </div>
 
       <main className="px-4 max-w-md mx-auto">
         
@@ -59,7 +69,7 @@ function App() {
           <p className="text-xs text-gray-400 tracking-widest mt-1">T E X T</p>
         </div>
 
-                        {/* 3. HERO CARD: FOUNDING OFFER */}
+        {/* 3. HERO CARD: FOUNDING OFFER */}
         <div className="border border-[#e9e8e2] rounded-2xl bg-white p-5 shadow-sm relative">
           <div className="flex justify-between items-start mb-2">
             <div className="text-xs font-semibold text-[#4a5d4e] flex items-center">
@@ -73,7 +83,6 @@ function App() {
 
           <div className="flex justify-between items-center mt-4">
             <div>
-              {/* Dynamic Spot Number Starting at #1 */}
               <div className="text-3xl font-bold text-[#2c3329]">#{claimedSpots + 1} <span className="text-lg text-gray-400 font-normal">/ 2500</span></div>
               <div className="text-sm font-medium mt-1">₹25 <span className="text-gray-500">— Founding Subscription</span></div>
               <p className="text-[10px] text-gray-400 mt-2">Be one of the first 2,500 FrameCraft subscribers.</p>
@@ -92,7 +101,6 @@ function App() {
                 <div className="text-[10px] text-gray-500 flex flex-col items-center"><span className="text-[#2c3329] font-bold">#{claimedSpots + 1}</span> Founding Badge</div>
                 <div className="text-[10px] text-gray-500 flex flex-col items-center"><span className="text-[#2c3329] font-bold flex items-center">🔒 ₹25</span> Price Locked</div>
              </div>
-             {/* Dynamic Spots Remaining */}
              <div className="text-[10px] border border-gray-200 px-2 py-1 rounded text-gray-500 bg-gray-50">
                {2500 - claimedSpots} spots remaining
              </div>
@@ -108,13 +116,6 @@ function App() {
             After 2,500 founding spots are claimed, Stage 2 pricing begins.<br/>Founding price terms apply as stated in the subscription terms.
           </p>
         </div>
-        
-        
-            
-        
-
-          
-        
 
         {/* 4. MEDIA SELECTOR (VIDEO / PHOTO) */}
         <div className="flex bg-white border border-[#e9e8e2] rounded-full mt-6 p-1 shadow-sm">
@@ -135,78 +136,89 @@ function App() {
         </div>
 
         {/* 5. ACTIVE STAGE 1 FEATURES */}
-        <div className="mt-4 border border-[#e9e8e2] rounded-2xl bg-white p-4 shadow-sm flex flex-col space-y-4">
+        <div className="mt-4 border border-[#e9e8e2] rounded-2xl bg-white p-4 shadow-sm">
           
           {mediaType === 'video' ? (
-            <>
-              {/* VIDEO: Family and Professional Active */}
-              <div className="flex items-center space-x-2 pb-3 border-b border-[#e9e8e2]">
-                <div className="w-1/2">
-                  <div className="flex items-center text-sm font-semibold text-[#2c3329] mb-3">
-                    <svg className="w-4 h-4 mr-1 text-[#4a5d4e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    Family
-                  </div>
-                  <div className="flex space-x-3 text-gray-500">
-                    <button className="hover:text-[#4a5d4e]"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg></button>
-                    <button className="hover:text-[#4a5d4e]"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg></button>
-                  </div>
+            <div className="flex flex-col space-y-4">
+              
+              {/* FAMILY MODE (Create, Saved) */}
+              <div className="pb-3 border-b border-[#e9e8e2]">
+                <div className="flex items-center text-sm font-semibold text-[#2c3329] mb-3">
+                  <svg className="w-4 h-4 mr-1 text-[#4a5d4e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                  Family
                 </div>
-                <div className="w-px h-12 bg-[#e9e8e2]"></div>
-                <div className="w-1/2 pl-4">
-                  <div className="flex items-center text-sm font-semibold text-[#2c3329] mb-3">
-                    <svg className="w-4 h-4 mr-1 text-[#4a5d4e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    Professional
-                  </div>
-                  <div className="flex space-x-3 text-gray-500">
-                    <button className="hover:text-[#4a5d4e]"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg></button>
-                    <button className="hover:text-[#4a5d4e]"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg></button>
-                    <button className="hover:text-[#4a5d4e]"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></button>
-                  </div>
+                <div className="flex space-x-6 text-gray-600">
+                  <button className="flex flex-col items-center hover:text-[#4a5d4e]">
+                    <div className="w-8 h-8 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg></div>
+                    <span className="text-[10px] font-medium">Create</span>
+                  </button>
+                  <button className="flex flex-col items-center hover:text-[#4a5d4e]">
+                    <div className="w-8 h-8 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg></div>
+                    <span className="text-[10px] font-medium">Saved</span>
+                  </button>
                 </div>
               </div>
-            </>
+
+              {/* PROFESSIONAL MODE (Create, Saved, Inventory, Analytics) */}
+              <div>
+                <div className="flex items-center text-sm font-semibold text-[#2c3329] mb-3">
+                  <svg className="w-4 h-4 mr-1 text-[#4a5d4e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                  Professional
+                </div>
+                <div className="flex space-x-5 text-gray-600">
+                  <button className="flex flex-col items-center hover:text-[#4a5d4e]">
+                    <div className="w-8 h-8 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg></div>
+                    <span className="text-[10px] font-medium">Create</span>
+                  </button>
+                  <button className="flex flex-col items-center hover:text-[#4a5d4e]">
+                    <div className="w-8 h-8 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg></div>
+                    <span className="text-[10px] font-medium">Saved</span>
+                  </button>
+                  <button className="flex flex-col items-center hover:text-[#4a5d4e]">
+                    <div className="w-8 h-8 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg></div>
+                    <span className="text-[10px] font-medium">Inventory</span>
+                  </button>
+                  <button className="flex flex-col items-center hover:text-[#4a5d4e]">
+                    <div className="w-8 h-8 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></div>
+                    <span className="text-[10px] font-medium">Analytics</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
           ) : (
-            <>
-               {/* PHOTO: Only Photo Features Active */}
-               <div className="flex flex-col items-center justify-center py-4">
-                 <div className="text-sm font-semibold text-[#2c3329] mb-4">Photo Studio</div>
-                 <div className="flex space-x-6 text-gray-500">
-                    <button className="flex flex-col items-center hover:text-[#4a5d4e]">
-                      <div className="w-10 h-10 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg></div>
-                      <span className="text-[10px]">Create</span>
-                    </button>
-                    <button className="flex flex-col items-center hover:text-[#4a5d4e]">
-                      <div className="w-10 h-10 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg></div>
-                      <span className="text-[10px]">Saved</span>
-                    </button>
-                 </div>
-               </div>
-            </>
+            /* PHOTO WORKSPACE ACTIVE OPTIONS */
+            <div className="flex flex-col items-center justify-center py-4">
+              <div className="text-sm font-semibold text-[#2c3329] mb-4">Photo Studio</div>
+              <div className="flex space-x-6 text-gray-600">
+                 <button className="flex flex-col items-center hover:text-[#4a5d4e]">
+                   <div className="w-10 h-10 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg></div>
+                   <span className="text-[10px] font-medium">Create</span>
+                 </button>
+                 <button className="flex flex-col items-center hover:text-[#4a5d4e]">
+                   <div className="w-10 h-10 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg></div>
+                   <span className="text-[10px] font-medium">Saved</span>
+                 </button>
+              </div>
+            </div>
           )}
 
         </div>
       </main>
 
-      {/* 6. BOTTOM / SECONDARY ECOSYSTEM (COMING SOON) */}
-      <footer className="fixed bottom-0 w-full bg-[#fcfbf8] border-t border-[#e9e8e2] px-2 py-3 overflow-hidden">
-        {/* COMING SOON WATERMARK */}
-        <div className="absolute inset-0 flex items-center justify-center z-10 bg-white/40 backdrop-blur-[1px] pointer-events-none">
-           <div className="bg-gray-100/90 border border-gray-200 text-gray-400 font-bold tracking-widest text-[10px] px-4 py-1 rounded-full transform -rotate-2">
-             COMING SOON
-           </div>
-        </div>
-        
-        {/* Greyed out / disabled icons */}
-        <div className="flex justify-around items-center opacity-40 grayscale pointer-events-none">
-          <div className="flex flex-col items-center"><svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg><span className="text-[9px]">Clubs</span></div>
-          <div className="flex flex-col items-center"><svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg><span className="text-[9px]">Shops</span></div>
-          <div className="flex flex-col items-center bg-[#4a5d4e] text-white p-2 rounded-2xl"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg><span className="text-[9px] mt-1">Board</span></div>
-          <div className="flex flex-col items-center"><svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2-2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg><span className="text-[9px]">Pole Voting</span></div>
-          <div className="flex flex-col items-center"><svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg><span className="text-[9px]">Social</span></div>
-        </div>
+      {/* 6. BOTTOM PRIMARY NAV (HOME, PROJECTS, RESOURCES, SETTINGS) */}
+      <footer className="fixed bottom-0 w-full bg-[#fcfbf8] border-t border-[#e9e8e2] px-2 py-3 z-40">
+        <nav className="flex justify-around items-center max-w-md mx-auto">
+          <button className="flex flex-col items-center text-[#4a5d4e] font-bold">
+            <div className="px-4 py-1.5 bg-[#4a5d4e] text-white rounded-md text-xs shadow-sm">HOME</div>
+          </button>
+          <button className="text-xs font-medium text-gray-400 uppercase tracking-wider">Projects</button>
+          <button className="text-xs font-medium text-gray-400 uppercase tracking-wider">Resources</button>
+          <button className="text-xs font-medium text-gray-400 uppercase tracking-wider">Settings</button>
+        </nav>
       </footer>
 
-      {/* PRESERVED: Payment Modal (Your existing functionality) */}
+      {/* PRESERVED: Payment Modal */}
       {showPaymentModal && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-xl p-6 w-full max-w-sm">
@@ -253,4 +265,3 @@ function App() {
 }
 
 export default App;
-        
