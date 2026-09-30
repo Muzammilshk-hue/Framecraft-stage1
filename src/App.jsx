@@ -117,7 +117,7 @@ function App() {
         
         {/* THE CALLING HEADER */}
         <div className="text-center my-6">
-                      <button
+          <button
             type="button"
             onClick={() => setIsSubModalOpen(true)}
             className="mx-auto mb-3 flex items-center gap-2 px-3 py-1.5 bg-[#4a5d4e]/10 border border-[#4a5d4e]/30 hover:bg-[#4a5d4e]/20 rounded-full text-xs font-bold text-[#4a5d4e] transition-all"
@@ -125,6 +125,8 @@ function App() {
             <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
             <span>Stage 1 Founding • ₹25</span>
           </button>
+            
+            
             
           <h1 className="text-3xl font-serif italic text-[#2c3329]">The Calling</h1>
           <p className="text-xs text-gray-400 tracking-widest mt-1">T E X T</p>
