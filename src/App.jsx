@@ -1,3 +1,4 @@
+import SubscriptionModal, { ProfileAvatarWithBadge } from './components/SubscriptionModal';
 
     import React, { useState, useEffect } from 'react';
 import { supabase } from './supabaseClient';
@@ -8,7 +9,8 @@ function App() {
   const [utrNumber, setUtrNumber] = useState('');
   const [claimedSpots, setClaimedSpots] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
-
+  const [isSubModalOpen, setIsSubModalOpen] = useState(false);
+    
   // Navigation / UI state
   const [mediaType, setMediaType] = useState('video'); // 'video' or 'photo'
 
@@ -115,6 +117,15 @@ function App() {
         
         {/* THE CALLING HEADER */}
         <div className="text-center my-6">
+                      <button
+            type="button"
+            onClick={() => setIsSubModalOpen(true)}
+            className="mx-auto mb-3 flex items-center gap-2 px-3 py-1.5 bg-[#4a5d4e]/10 border border-[#4a5d4e]/30 hover:bg-[#4a5d4e]/20 rounded-full text-xs font-bold text-[#4a5d4e] transition-all"
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+            <span>Stage 1 Founding • ₹25</span>
+          </button>
+            
           <h1 className="text-3xl font-serif italic text-[#2c3329]">The Calling</h1>
           <p className="text-xs text-gray-400 tracking-widest mt-1">T E X T</p>
         </div>
@@ -156,13 +167,14 @@ function App() {
              </div>
           </div>
 
-          <button 
-            onClick={() => setShowPaymentModal(true)}
-            className="w-full mt-4 bg-[#4a5d4e] text-white py-3 rounded-lg font-bold text-xs tracking-widest uppercase hover:bg-[#3f4f42] transition-colors"
-          >
-            Claim My Spot →
-          </button>
-          <p className="text-[8px] text-center text-gray-400 mt-2 leading-tight">
+          <button
+  type="button"
+  onClick={() => setIsSubModalOpen(true)}
+  className="w-full mt-6 bg-[#4a5d4e] text-white py-3 rounded-lg font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2"
+>
+  Claim My Spot →
+</button>
+            
             After 2,500 founding spots are claimed, Stage 2 pricing begins.<br/>Founding price terms apply as stated in the subscription terms.
           </p>
         </div>
@@ -266,55 +278,22 @@ function App() {
         </nav>
       </footer>
 
-      {/* REAL TRANSACTIONS PAYMENT MODAL */}
-      {showPaymentModal && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl p-6 w-full max-w-sm">
-            <h3 className="font-bold text-lg mb-2">Claim Founding Spot #{claimedSpots + 1}</h3>
-            <p className="text-xs text-gray-600 mb-4">Transfer ₹25 via UPI, then enter your 12-digit transaction UTR number to lock in your official badge.</p>
-            
-            {paymentStatus === 'success' ? (
-              <div className="text-green-600 font-bold text-center py-4 border border-green-200 bg-green-50 rounded-lg">
-                Payment Verified! Founding Spot #{claimedSpots} is officially claimed.
-              </div>
-            ) : (
-              <form onSubmit={handlePaymentSubmit} className="space-y-4">
-                <input 
-                  type="text" 
-                  placeholder="Enter 12-digit UTR Number"
-                                    value={utrNumber}
-                  onChange={(e) => setUtrNumber(e.target.value)}
-                  required
-                  className="w-full border p-2 rounded-lg text-sm"
-                  maxLength={12}
-                  minLength={12}
-                />
-
-                {errorMessage && (
-                  <p className="text-xs text-red-500 font-medium">{errorMessage}</p>
-                )}
-
-                <button 
-                  type="submit" 
-                  disabled={paymentStatus === 'verifying'}
-                  className="w-full bg-[#4a5d4e] text-white py-2.5 rounded-lg font-bold text-xs uppercase tracking-wider"
-                >
-                  {paymentStatus === 'verifying' ? 'Verifying with Database...' : 'Submit & Claim Spot'}
-                </button>
-                <button 
-                  type="button"
-                  onClick={() => {
-                    setShowPaymentModal(false);
-                    setErrorMessage('');
-                  }}
-                  className="w-full text-gray-500 text-xs mt-1"
-                >
-                  Cancel
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
+            {/* REAL STAGE 1 SUBSCRIPTION MODAL */}
+      <SubscriptionModal
+        isOpen={isSubModalOpen}
+        onClose={() => setIsSubModalOpen(false)}
+        claimedSpots={claimedSpots}
+        maxSpots={4500}
+        isSubscribed={paymentStatus === 'success'}
+        userFoundingNumber={claimedSpots}
+        onProcessPayment={handlePaymentSubmit}
+        paymentStatus={paymentStatus}
+        errorMessage={errorMessage}
+        utrNumber={utrNumber}
+        setUtrNumber={setUtrNumber}
+        onCancelSubscription={() => setPaymentStatus(null)}
+      />
+    
       )}
 
     </div>
