@@ -142,14 +142,62 @@ function App() {
             <div className="text-[10px] bg-gray-100 px-2 py-1 rounded text-gray-500 border border-gray-200">
               Limited to 2,500
             </div>
-          </div>
 
-          <div className="flex justify-between items-center mt-4">
-            <div>
-              <div className="text-3xl font-bold text-[#2c3329]">#{claimedSpots + 1} <span className="text-lg text-gray-400 font-normal">/ 2500</span></div>
-              <div className="text-sm font-medium mt-1">₹25 <span className="text-gray-500">— Founding Subscription</span></div>
-              <p className="text-[10px] text-gray-400 mt-2">Be one of the first 2,500 FrameCraft subscribers.</p>
-            </div>
+                {/* Main Details & Badge Row */}
+      <div className="flex justify-between items-center mt-4">
+        <div>
+          <div className="text-3xl font-bold text-[#2c3329]">
+            #{claimedSpots} <span className="text-lg text-gray-400 font-normal">/ 2500</span>
+          </div>
+          <div className="text-sm font-medium mt-1 text-[#2c3329]">
+            ₹25 <span className="text-gray-500">— Founding Subscription</span>
+          </div>
+          <p className="text-[10px] text-gray-400 mt-2 max-w-[200px]">
+            Be one of the first 2,500 FrameCraft subscribers.
+          </p>
+        </div>
+
+        {/* Live Synchronized Badge */}
+        <div className="w-24 h-24 rounded-full bg-[#1a2e20] border-[3px] border-[#cda851] shadow-lg flex flex-col items-center justify-center text-center p-1 shrink-0">
+          <span className="text-[9px] text-[#cda851] font-semibold tracking-wider mb-0.5">FRAMECRAFT</span>
+          <span className="text-white font-bold text-2xl tracking-tight">#{claimedSpots}</span>
+          <span className="text-[10px] text-[#cda851] mt-0.5">1/2500</span>
+        </div>
+      </div>
+
+      {/* Stats Row */}
+      <div className="flex justify-between items-center mt-6 pt-4 border-t border-[#ebe8e2]">
+        <div className="flex space-x-4">
+          <div className="text-[10px] text-gray-500 flex flex-col items-center">
+            <span className="text-[#2c3329] font-bold">#{claimedSpots}</span>
+            <span>Founding Badge</span>
+          </div>
+          <div className="text-[10px] text-gray-500 flex flex-col items-center">
+            <span className="text-[#2c3329] font-bold">🔒 ₹25</span>
+            <span>Price Locked</span>
+          </div>
+        </div>
+        <div className="text-[10px] border border-gray-200 px-2 py-1 rounded text-gray-500 bg-gray-50">
+          {2500 - claimedSpots} spots remaining
+        </div>
+      </div>
+
+      {/* Full Width Button */}
+      <button
+        type="button"
+        onClick={() => setIsSubModalOpen(true)}
+        className="w-full mt-6 bg-[#4a5d4e] text-white py-3 rounded-lg font-bold text-xs tracking-widest uppercase flex items-center justify-center hover:bg-[#3d4d40] transition-colors"
+      >
+        Claim My Spot →
+      </button>
+
+      {/* Centered Footer Disclaimer */}
+      <p className="text-[10px] text-stone-400 text-center mt-3 leading-tight">
+        After 2,500 founding spots are claimed, Stage 2 pricing begins.<br />
+        Founding price terms apply as stated in subscription terms.
+      </p>
+    </div>
+          
             
             {/* Live Synchronized Badge */}
             <div className="w-24 h-24 rounded-full bg-[#1a2e20] border-[3px] border-[#cda851] shadow-lg flex flex-col items-center justify-center flex-shrink-0">
