@@ -232,7 +232,66 @@ function App() {
         </button>
       </div>
     </div>
+        {/* WORKSPACE GRIDS */}
+        <div className="bg-white rounded-3xl p-6 shadow-sm border border-[#ebe8e2] mb-24">
+          
+          {/* Family Section */}
+          <div className="mb-6">
+            <h3 className="text-sm font-semibold text-[#2c3329] mb-4 flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+              Family
+            </h3>
+            <div className="flex gap-4">
+              <button className="flex flex-col items-center gap-2">
+                <div className="w-12 h-12 rounded-2xl border border-stone-200 flex items-center justify-center text-stone-500 hover:bg-stone-50 transition">
+                  <span className="text-xl">+</span>
+                </div>
+                <span className="text-[11px] text-stone-500 font-medium">Create</span>
+              </button>
+              <button className="flex flex-col items-center gap-2">
+                <div className="w-12 h-12 rounded-2xl border border-stone-200 flex items-center justify-center text-stone-500 hover:bg-stone-50 transition">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
+                </div>
+                <span className="text-[11px] text-stone-500 font-medium">Saved</span>
+              </button>
+            </div>
+          </div>
 
+          {/* Professional Section */}
+          <div>
+            <h3 className="text-sm font-semibold text-[#2c3329] mb-4 flex items-center gap-2">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+              Professional
+            </h3>
+            <div className="flex gap-4">
+              <button className="flex flex-col items-center gap-2">
+                <div className="w-12 h-12 rounded-2xl border border-stone-200 flex items-center justify-center text-stone-500 hover:bg-stone-50 transition">
+                  <span className="text-xl">+</span>
+                </div>
+                <span className="text-[11px] text-stone-500 font-medium">Create</span>
+              </button>
+              <button className="flex flex-col items-center gap-2">
+                <div className="w-12 h-12 rounded-2xl border border-stone-200 flex items-center justify-center text-stone-500 hover:bg-stone-50 transition">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
+                </div>
+                <span className="text-[11px] text-stone-500 font-medium">Saved</span>
+              </button>
+              <button className="flex flex-col items-center gap-2">
+                <div className="w-12 h-12 rounded-2xl border border-stone-200 flex items-center justify-center text-stone-500 hover:bg-stone-50 transition">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                </div>
+                <span className="text-[11px] text-stone-500 font-medium">Inventory</span>
+              </button>
+              <button className="flex flex-col items-center gap-2">
+                <div className="w-12 h-12 rounded-2xl border border-stone-200 flex items-center justify-center text-stone-500 hover:bg-stone-50 transition">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                </div>
+                <span className="text-[11px] text-stone-500 font-medium">Analytics</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
     {/* 5. BOTTOM PRIMARY NAV */}
     <footer className="fixed bottom-0 w-full bg-[#fcfbf9] border-t border-stone-200 py-2 px-4 z-40">
       <nav className="flex justify-around items-center max-w-md mx-auto">
