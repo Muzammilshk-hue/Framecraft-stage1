@@ -166,22 +166,27 @@ function App() {
              </div>
              <div className="text-[10px] border border-gray-200 px-2 py-1 rounded text-gray-500 bg-gray-50">
                {2500 - claimedSpots} spots remaining
-             </div>
+            
+            <div className="text-[10px] border border-gray-200 px-2 py-1 rounded text-gray-500 bg-gray-50">
+              {2500 - claimedSpots} spots remaining
+            </div>
           </div>
 
-                      <button
-              type="button"
-              onClick={() => setIsSubModalOpen(true)}
-              className="w-full mt-6 bg-[#4a5d4e] text-white py-3 rounded-lg font-bold text-xs tracking-widest uppercase flex items-center justify-center"
-            >
-              Claim My Spot →
-            </button>
-            <p className="text-[10px] text-stone-400 text-center mt-3">
-              After 2,500 founding spots are claimed, Stage 2 pricing begins.<br />
-              Founding price terms apply as stated in subscription terms.
-            </p>
-          </div>
+          <button
+            type="button"
+            onClick={() => setIsSubModalOpen(true)}
+            className="w-full mt-6 bg-[#4a5d4e] text-white py-3 rounded-lg font-bold text-xs tracking-widest uppercase flex items-center justify-center"
+          >
+            Claim My Spot →
+          </button>
+
+          <p className="text-[10px] text-stone-400 text-center mt-3">
+            After 2,500 founding spots are claimed, Stage 2 pricing begins.<br />
+            Founding price terms apply as stated in subscription terms.
+          </p>
         </div>
+      </div>
+          
         
 
         {/* 4. MEDIA SELECTOR */}
