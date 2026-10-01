@@ -131,232 +131,156 @@ function App() {
           <h1 className="text-3xl font-serif italic text-[#2c3329]">The Calling</h1>
           <p className="text-xs text-gray-400 tracking-widest mt-1">T E X T</p>
         </div>
+                     
+ {/* 3. MAIN OFFER CARD */}
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-[#ebe8e2] mb-6">
+        {/* Header Tag */}
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-[#2c3329]">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+            Stage 1 Founding Offer
+          </div>
+          <div className="text-[10px] bg-gray-100 px-2 py-1 rounded text-gray-500 border border-gray-200">
+            Limited to 2,500
+          </div>
+        </div>
 
-        {/* 3. HERO CARD: FOUNDING OFFER */}
-        <div className="border border-[#e9e8e2] rounded-2xl bg-white p-5 shadow-sm relative">
-          <div className="flex justify-between items-start mb-2">
-            <div className="text-xs font-semibold text-[#4a5d4e] flex items-center">
-              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-              Stage 1 Founding Offer
+        {/* Main Details & Badge Row */}
+        <div className="flex justify-between items-center mt-4">
+          <div>
+            <div className="text-3xl font-bold text-[#2c3329]">
+              #{claimedSpots} <span className="text-lg text-gray-400 font-normal">/ 2500</span>
             </div>
-            <div className="text-[10px] bg-gray-100 px-2 py-1 rounded text-gray-500 border border-gray-200">
-              Limited to 2,500
+            <div className="text-sm font-medium mt-1 text-[#2c3329]">
+              ₹25 <span className="text-gray-500">— Founding Subscription</span>
             </div>
+            <p className="text-[10px] text-gray-400 mt-2 max-w-[200px]">
+              Be one of the first 2,500 FrameCraft subscribers.
+            </p>
+          </div>
 
-                {/* Main Details & Badge Row */}
-      <div className="flex justify-between items-center mt-4">
-        <div>
-          <div className="text-3xl font-bold text-[#2c3329]">
-            #{claimedSpots} <span className="text-lg text-gray-400 font-normal">/ 2500</span>
+          {/* Live Synchronized Badge */}
+          <div className="w-24 h-24 rounded-full bg-[#1a2e20] border-[3px] border-[#cda851] shadow-lg flex flex-col items-center justify-center text-center p-1 shrink-0">
+            <span className="text-[9px] text-[#cda851] font-semibold tracking-wider mb-0.5">FRAMECRAFT</span>
+            <span className="text-white font-bold text-2xl tracking-tight">#{claimedSpots}</span>
+            <span className="text-[10px] text-[#cda851] mt-0.5">1/2500</span>
           </div>
-          <div className="text-sm font-medium mt-1 text-[#2c3329]">
-            ₹25 <span className="text-gray-500">— Founding Subscription</span>
-          </div>
-          <p className="text-[10px] text-gray-400 mt-2 max-w-[200px]">
-            Be one of the first 2,500 FrameCraft subscribers.
-          </p>
         </div>
 
-        {/* Live Synchronized Badge */}
-        <div className="w-24 h-24 rounded-full bg-[#1a2e20] border-[3px] border-[#cda851] shadow-lg flex flex-col items-center justify-center text-center p-1 shrink-0">
-          <span className="text-[9px] text-[#cda851] font-semibold tracking-wider mb-0.5">FRAMECRAFT</span>
-          <span className="text-white font-bold text-2xl tracking-tight">#{claimedSpots}</span>
-          <span className="text-[10px] text-[#cda851] mt-0.5">1/2500</span>
+        {/* Stats Row */}
+        <div className="flex justify-between items-center mt-6 pt-4 border-t border-[#ebe8e2]">
+          <div className="flex space-x-4">
+            <div className="text-[10px] text-gray-500 flex flex-col items-center">
+              <span className="text-[#2c3329] font-bold">#{claimedSpots}</span>
+              <span>Founding Badge</span>
+            </div>
+            <div className="text-[10px] text-gray-500 flex flex-col items-center">
+              <span className="text-[#2c3329] font-bold">🔒 ₹25</span>
+              <span>Price Locked</span>
+            </div>
+          </div>
+          <div className="text-[10px] border border-gray-200 px-2 py-1 rounded text-gray-500 bg-gray-50">
+            {2500 - claimedSpots} spots remaining
+          </div>
         </div>
+
+        {/* Full Width Button */}
+        <button
+          type="button"
+          onClick={() => setIsSubModalOpen(true)}
+          className="w-full mt-6 bg-[#4a5d4e] text-white py-3 rounded-lg font-bold text-xs tracking-widest uppercase flex items-center justify-center hover:bg-[#3d4d40] transition-colors"
+        >
+          Claim My Spot →
+        </button>
+
+        {/* Centered Footer Disclaimer */}
+        <p className="text-[10px] text-stone-400 text-center mt-3 leading-tight">
+          After 2,500 founding spots are claimed, Stage 2 pricing begins.<br />
+          Founding price terms apply as stated in subscription terms.
+        </p>
       </div>
+    </main>
 
-      {/* Stats Row */}
-      <div className="flex justify-between items-center mt-6 pt-4 border-t border-[#ebe8e2]">
-        <div className="flex space-x-4">
-          <div className="text-[10px] text-gray-500 flex flex-col items-center">
-            <span className="text-[#2c3329] font-bold">#{claimedSpots}</span>
-            <span>Founding Badge</span>
-          </div>
-          <div className="text-[10px] text-gray-500 flex flex-col items-center">
-            <span className="text-[#2c3329] font-bold">🔒 ₹25</span>
-            <span>Price Locked</span>
-          </div>
-        </div>
-        <div className="text-[10px] border border-gray-200 px-2 py-1 rounded text-gray-500 bg-gray-50">
-          {2500 - claimedSpots} spots remaining
-        </div>
+    {/* 4. MEDIA SELECTOR */}
+    <div className="max-w-md mx-auto px-4 mb-20">
+      <div className="bg-[#e2e4df] p-1 rounded-full flex gap-1">
+        <button
+          type="button"
+          onClick={() => setMediaType('video')}
+          className={`flex-1 py-2 rounded-full font-bold text-xs flex items-center justify-center gap-2 transition-all ${
+            mediaType === 'video' ? 'bg-[#4a5d4e] text-white shadow-sm' : 'text-stone-600'
+          }`}
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+          Video
+        </button>
+        <button
+          type="button"
+          onClick={() => setMediaType('photo')}
+          className={`flex-1 py-2 rounded-full font-bold text-xs flex items-center justify-center gap-2 transition-all ${
+            mediaType === 'photo' ? 'bg-[#4a5d4e] text-white shadow-sm' : 'text-stone-600'
+          }`}
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a1 1 0 011.414 0L16 16m-2-2l1.586-1.586a1 1 0 011.414 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          Photo
+        </button>
       </div>
-
-      {/* Full Width Button */}
-      <button
-        type="button"
-        onClick={() => setIsSubModalOpen(true)}
-        className="w-full mt-6 bg-[#4a5d4e] text-white py-3 rounded-lg font-bold text-xs tracking-widest uppercase flex items-center justify-center hover:bg-[#3d4d40] transition-colors"
-      >
-        Claim My Spot →
-      </button>
-
-      {/* Centered Footer Disclaimer */}
-      <p className="text-[10px] text-stone-400 text-center mt-3 leading-tight">
-        After 2,500 founding spots are claimed, Stage 2 pricing begins.<br />
-        Founding price terms apply as stated in subscription terms.
-      </p>
     </div>
-          
-            
-            {/* Live Synchronized Badge */}
-            <div className="w-24 h-24 rounded-full bg-[#1a2e20] border-[3px] border-[#cda851] shadow-lg flex flex-col items-center justify-center flex-shrink-0">
-              <span className="text-[9px] text-[#cda851] font-semibold tracking-wider mb-0.5">FRAMECRAFT</span>
-              <span className="text-white font-bold text-2xl tracking-tight">#{claimedSpots + 1}</span>
-              <span className="text-[10px] text-[#cda851] mt-0.5">1/2500</span>
-            </div>
-          </div>
 
-          <div className="flex justify-between items-center mt-6 pt-4 border-t border-[#e9e8e2]">
-             <div className="flex space-x-4">
-                <div className="text-[10px] text-gray-500 flex flex-col items-center"><span className="text-[#2c3329] font-bold">#{claimedSpots + 1}</span> Founding Badge</div>
-                <div className="text-[10px] text-gray-500 flex flex-col items-center"><span className="text-[#2c3329] font-bold flex items-center">🔒 ₹25</span> Price Locked</div>
-             </div>
-             <div className="text-[10px] border border-gray-200 px-2 py-1 rounded text-gray-500 bg-gray-50">
-               {2500 - claimedSpots} spots remaining
-            
-            <div className="text-[10px] border border-gray-200 px-2 py-1 rounded text-gray-500 bg-gray-50">
-              {2500 - claimedSpots} spots remaining
-            </div>
-          </div>
+    {/* 5. BOTTOM PRIMARY NAV */}
+    <footer className="fixed bottom-0 w-full bg-[#fcfbf9] border-t border-stone-200 py-2 px-4 z-40">
+      <nav className="flex justify-around items-center max-w-md mx-auto">
+        <button type="button" className="px-3 py-1 bg-[#4a5d4e] text-white rounded-md text-xs font-bold uppercase">
+          Home
+        </button>
+        <button type="button" className="px-3 py-1 text-stone-400 text-xs font-bold uppercase hover:text-stone-700">
+          Projects
+        </button>
+        <button type="button" className="px-3 py-1 text-stone-400 text-xs font-bold uppercase hover:text-stone-700">
+          Resources
+        </button>
+        <button type="button" className="px-3 py-1 text-stone-400 text-xs font-bold uppercase hover:text-stone-700">
+          Settings
+        </button>
+      </nav>
+    </footer>
 
-          <button
-            type="button"
-            onClick={() => setIsSubModalOpen(true)}
-            className="w-full mt-6 bg-[#4a5d4e] text-white py-3 rounded-lg font-bold text-xs tracking-widest uppercase flex items-center justify-center"
-          >
-            Claim My Spot →
-          </button>
-
-          <p className="text-[10px] text-stone-400 text-center mt-3">
-            After 2,500 founding spots are claimed, Stage 2 pricing begins.<br />
-            Founding price terms apply as stated in subscription terms.
-          </p>
-        </div>
-      </div>
-          
-        
-
-        {/* 4. MEDIA SELECTOR */}
-        <div className="flex bg-white border border-[#e9e8e2] rounded-full mt-6 p-1 shadow-sm">
-          <button 
-            onClick={() => setMediaType('video')}
-            className={`flex-1 flex items-center justify-center py-2 rounded-full text-sm font-medium transition-colors ${mediaType === 'video' ? 'bg-[#4a5d4e] text-white' : 'text-gray-500 hover:bg-gray-50'}`}
-          >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            Video
-          </button>
-          <button 
-            onClick={() => setMediaType('photo')}
-            className={`flex-1 flex items-center justify-center py-2 rounded-full text-sm font-medium transition-colors ${mediaType === 'photo' ? 'bg-[#4a5d4e] text-white' : 'text-gray-500 hover:bg-gray-50'}`}
-          >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-            Photo
-          </button>
-        </div>
-
-        {/* 5. ACTIVE STAGE 1 WORKSPACE OPTIONS */}
-        <div className="mt-4 border border-[#e9e8e2] rounded-2xl bg-white p-4 shadow-sm">
-          {mediaType === 'video' ? (
-            <div className="flex flex-col space-y-4">
-              
-              {/* FAMILY MODE */}
-              <div className="pb-3 border-b border-[#e9e8e2]">
-                <div className="flex items-center text-sm font-semibold text-[#2c3329] mb-3">
-                  <svg className="w-4 h-4 mr-1 text-[#4a5d4e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                  Family
-                </div>
-                <div className="flex space-x-6 text-gray-600">
-                  <button onClick={() => alert('Family Create Mode Opened')} className="flex flex-col items-center hover:text-[#4a5d4e]">
-                    <div className="w-8 h-8 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg></div>
-                    <span className="text-[10px] font-medium">Create</span>
-                  </button>
-                  <button onClick={() => alert('Family Saved Library Opened')} className="flex flex-col items-center hover:text-[#4a5d4e]">
-                    <div className="w-8 h-8 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg></div>
-                    <span className="text-[10px] font-medium">Saved</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* PROFESSIONAL MODE */}
-              <div>
-                <div className="flex items-center text-sm font-semibold text-[#2c3329] mb-3">
-                  <svg className="w-4 h-4 mr-1 text-[#4a5d4e]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                  Professional
-                </div>
-                <div className="flex space-x-5 text-gray-600">
-                  <button onClick={() => alert('Pro Create Studio Opened')} className="flex flex-col items-center hover:text-[#4a5d4e]">
-                    <div className="w-8 h-8 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg></div>
-                    <span className="text-[10px] font-medium">Create</span>
-                  </button>
-                  <button onClick={() => alert('Pro Saved Assets Opened')} className="flex flex-col items-center hover:text-[#4a5d4e]">
-                    <div className="w-8 h-8 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg></div>
-                    <span className="text-[10px] font-medium">Saved</span>
-                  </button>
-                  <button onClick={() => alert('Pro Inventory Opened')} className="flex flex-col items-center hover:text-[#4a5d4e]">
-                    <div className="w-8 h-8 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg></div>
-                    <span className="text-[10px] font-medium">Inventory</span>
-                  </button>
-                  <button onClick={() => alert('Pro Analytics Dashboard Opened')} className="flex flex-col items-center hover:text-[#4a5d4e]">
-                    <div className="w-8 h-8 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg></div>
-                    <span className="text-[10px] font-medium">Analytics</span>
-                  </button>
-                </div>
-              </div>
-
-            </div>
-          ) : (
-            /* PHOTO MODE */
-            <div className="flex flex-col items-center justify-center py-4">
-              <div className="text-sm font-semibold text-[#2c3329] mb-4">Photo Studio</div>
-              <div className="flex space-x-6 text-gray-600">
-                 <button onClick={() => alert('Photo Create Studio Opened')} className="flex flex-col items-center hover:text-[#4a5d4e]">
-                   <div className="w-10 h-10 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg></div>
-                   <span className="text-[10px] font-medium">Create</span>
-                 </button>
-                 <button onClick={() => alert('Photo Saved Assets Opened')} className="flex flex-col items-center hover:text-[#4a5d4e]">
-                   <div className="w-10 h-10 border border-gray-200 rounded-lg flex items-center justify-center mb-1"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg></div>
-                   <span className="text-[10px] font-medium">Saved</span>
-                 </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </main>
-
-      {/* 6. BOTTOM PRIMARY NAV */}
-      <footer className="fixed bottom-0 w-full bg-[#fcfbf8] border-t border-[#e9e8e2] px-2 py-3 z-40">
-        <nav className="flex justify-around items-center max-w-md mx-auto">
-          <button className="flex flex-col items-center text-[#4a5d4e] font-bold">
-            <div className="px-4 py-1.5 bg-[#4a5d4e] text-white rounded-md text-xs shadow-sm">HOME</div>
-          </button>
-          <button onClick={() => alert('Projects section coming soon')} className="text-xs font-medium text-gray-400 uppercase tracking-wider">Projects</button>
-          <button onClick={() => alert('Resources section coming soon')} className="text-xs font-medium text-gray-400 uppercase tracking-wider">Resources</button>
-          <button onClick={() => alert('Settings section coming soon')} className="text-xs font-medium text-gray-400 uppercase tracking-wider">Settings</button>
-        </nav>
-      </footer>
-
-            {/* REAL STAGE 1 SUBSCRIPTION MODAL */}
-      <SubscriptionModal
-        isOpen={isSubModalOpen}
-        onClose={() => setIsSubModalOpen(false)}
-        claimedSpots={claimedSpots}
-        maxSpots={4500}
-        isSubscribed={paymentStatus === 'success'}
-        userFoundingNumber={claimedSpots}
-        onProcessPayment={handlePaymentSubmit}
-        paymentStatus={paymentStatus}
-        errorMessage={errorMessage}
-        utrNumber={utrNumber}
-        setUtrNumber={setUtrNumber}
-        onCancelSubscription={() => setPaymentStatus(null)}
-      />
-    
-      )}
-
-    </div>
+    {/* REAL STAGE 1 SUBSCRIPTION MODAL */}
+    <SubscriptionModal
+      isOpen={isSubModalOpen}
+      onClose={() => setIsSubModalOpen(false)}
+      claimedSpots={claimedSpots}
+      maxSpots={2500}
+      isSubscribed={paymentStatus === 'success'}
+      userFoundingNumber={claimedSpots}
+      onProcessPayment={handlePaymentSubmit}
+      paymentStatus={paymentStatus}
+      errorMessage={errorMessage}
+      utrNumber={utrNumber}
+      setUtrNumber={setUtrNumber}
+      onCancelSubscription={() => setPaymentStatus(null)}
+    />
+  </div>
   );
 }
 
 export default App;
+              
+
+
+
+
+
+
+
+
+
+
+                
 
