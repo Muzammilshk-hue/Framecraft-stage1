@@ -169,17 +169,20 @@ function App() {
              </div>
           </div>
 
-          <button
-  type="button"
-  onClick={() => setIsSubModalOpen(true)}
-  className="w-full mt-6 bg-[#4a5d4e] text-white py-3 rounded-lg font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-2"
->
-  Claim My Spot →
-</button>
-            
-            After 2,500 founding spots are claimed, Stage 2 pricing begins.<br/>Founding price terms apply as stated in the subscription terms.
-          </p>
+                      <button
+              type="button"
+              onClick={() => setIsSubModalOpen(true)}
+              className="w-full mt-6 bg-[#4a5d4e] text-white py-3 rounded-lg font-bold text-xs tracking-widest uppercase flex items-center justify-center"
+            >
+              Claim My Spot →
+            </button>
+            <p className="text-[10px] text-stone-400 text-center mt-3">
+              After 2,500 founding spots are claimed, Stage 2 pricing begins.<br />
+              Founding price terms apply as stated in subscription terms.
+            </p>
+          </div>
         </div>
+        
 
         {/* 4. MEDIA SELECTOR */}
         <div className="flex bg-white border border-[#e9e8e2] rounded-full mt-6 p-1 shadow-sm">
