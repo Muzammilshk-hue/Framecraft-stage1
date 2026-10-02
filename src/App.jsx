@@ -162,7 +162,8 @@ export default function App() {
             </button>
           </div>
         </div>
-{/* 5. WORKSPACE CONTAINER (Clean Vertical Column Layout) */}
+
+      {/* 5. WORKSPACE CONTAINER (Clean Vertical Column Layout) */}
 <div className="bg-white rounded-3xl p-6 shadow-sm border border-[#ebe8e2] mb-24 space-y-8">
   
   {/* FAMILY SECTION */}
@@ -266,7 +267,7 @@ export default function App() {
   )}
 
 </div>
-        
+              
 
       {/* 6. BOTTOM PRIMARY NAV */}
       <footer className="fixed bottom-0 w-full bg-[#fcfbf9] border-t border-stone-200 py-3 px-4 z-40">
