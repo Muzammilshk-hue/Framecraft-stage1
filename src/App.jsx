@@ -163,7 +163,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* 5. WORKSPACE GRIDS */}
+          {/* 5. WORKSPACE GRIDS */}
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-[#ebe8e2] mb-24">
           {/* Family Section */}
           <div className="mb-6">
@@ -171,7 +171,7 @@ export default function App() {
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
               Family
             </h3>
-            <div className="flex gap-4">
+            <div className="flex flex-col gap-4">
               <button type="button" className="flex flex-col items-center gap-2">
                 <div className="w-12 h-12 rounded-2xl border border-stone-200 flex items-center justify-center text-stone-500 hover:bg-stone-50 transition">
                   <span className="text-xl">+</span>
@@ -186,13 +186,14 @@ export default function App() {
               </button>
             </div>
           </div>
-{/* Professional Section */}
+
+          {/* Professional Section */}
           <div>
             <h3 className="text-sm font-semibold text-[#2c3329] mb-4 flex items-center gap-2">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2H4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
               Professional
             </h3>
-            <div className="flex gap-4">
+            <div className="flex flex-col gap-4">
               <button type="button" className="flex flex-col items-center gap-2">
                 <div className="w-12 h-12 rounded-2xl border border-stone-200 flex items-center justify-center text-stone-500 hover:bg-stone-50 transition">
                   <span className="text-xl">+</span>
@@ -222,7 +223,8 @@ export default function App() {
                 </>
               )}
             </div>
-          
+          </div>
+        </div>
 
       {/* 6. BOTTOM PRIMARY NAV */}
       <footer className="fixed bottom-0 w-full bg-[#fcfbf9] border-t border-stone-200 py-2 px-4 z-40">
