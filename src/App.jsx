@@ -163,7 +163,7 @@ export default function App() {
           </div>
         </div>
 
-          {/* 5. WORKSPACE GRIDS */}
+        {/* 5. WORKSPACE GRIDS */}
         <div className="bg-white rounded-3xl p-6 shadow-sm border border-[#ebe8e2] mb-24">
           {/* Family Section */}
           <div className="mb-6">
@@ -180,7 +180,7 @@ export default function App() {
               </button>
               <button type="button" className="flex flex-col items-center gap-2">
                 <div className="w-12 h-12 rounded-2xl border border-stone-200 flex items-center justify-center text-stone-500 hover:bg-stone-50 transition">
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002-2V8m-9 4h4" /></svg>
                 </div>
                 <span className="text-[11px] text-stone-500 font-medium">Saved</span>
               </button>
@@ -224,7 +224,8 @@ export default function App() {
               )}
             </div>
           </div>
-        </main>
+        </div> {/* <-- I ADDED THIS MISSING CLOSING DIV */}
+      </main>
 
       {/* 6. BOTTOM PRIMARY NAV */}
       <footer className="fixed bottom-0 w-full bg-[#fcfbf9] border-t border-stone-200 py-2 px-4 z-40">
@@ -261,5 +262,4 @@ export default function App() {
       />
     </div>
   );
-            }
-        
+}
