@@ -224,7 +224,7 @@ export default function App() {
               )}
             </div>
           </div>
-        </div>
+        </main>
 
       {/* 6. BOTTOM PRIMARY NAV */}
       <footer className="fixed bottom-0 w-full bg-[#fcfbf9] border-t border-stone-200 py-2 px-4 z-40">
