@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import SubscriptionModal from './SubscriptionModal';
+import SubscriptionModal from './components/SubscriptionModal';
 
 export default function App() {
   const [isSubModalOpen, setIsSubModalOpen] = useState(false);
