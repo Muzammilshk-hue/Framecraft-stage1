@@ -3,127 +3,105 @@ import React, { useState, useEffect } from 'react';
 export default function SubscriptionModal({
   isOpen,
   onClose,
-  claimedSpots = 0,
+  claimedSpots,
   maxSpots = 2500,
-  isSubscribed = false,
-  userFoundingNumber = 0,
+  isSubscribed,
   onProcessPayment,
   paymentStatus,
   errorMessage,
   utrNumber,
-  setUtrNumber,
-  onCancelSubscription
+  setUtrNumber
 }) {
-  const [email, setEmail] = useState('');
-  const [isTrialStarted, setIsTrialStarted] = useState(false);
-  const [savedEmail, setSavedEmail] = useState('');
+  // Live Timer State (Starting at 48 Hours = 172,800 seconds)
+  const [secondsRemaining, setSecondsRemaining] = useState(48 * 3600);
 
   useEffect(() => {
-    const existingEmail = localStorage.getItem('framecraft_trial_email');
-    if (existingEmail) {
-      setSavedEmail(existingEmail);
-      setIsTrialStarted(true);
-    }
-  }, []);
+    if (!isOpen) return;
 
-  const handleStartTrial = (e) => {
-    e.preventDefault();
-    if (!email || !email.includes('@')) {
-      alert('Please enter a valid Gmail / Email address.');
-      return;
-    }
-    localStorage.setItem('framecraft_trial_email', email);
-    setSavedEmail(email);
-    setIsTrialStarted(true);
+    const timer = setInterval(() => {
+      setSecondsRemaining((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isOpen]);
+
+  // Format seconds to HH:MM:SS
+  const formatTimer = (totalSeconds) => {
+    const hrs = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
+    const mins = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+    const secs = (totalSeconds % 60).toString().padStart(2, '0');
+    return `${hrs}:${mins}:${secs}`;
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-[#111] text-white border border-stone-800 rounded-2xl max-w-md w-full p-6 relative shadow-2xl max-h-[90vh] overflow-y-auto">
-        
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+      <div className="relative w-full max-w-sm bg-[#121413] text-white rounded-2xl p-6 shadow-2xl border border-stone-800">
         {/* Close Button */}
-        <button 
+        <button
+          type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 text-stone-400 hover:text-white font-bold text-lg"
+          className="absolute top-4 right-4 text-stone-400 hover:text-white text-xl font-bold transition"
         >
           ✕
         </button>
 
-        <h2 className="text-xl font-bold text-emerald-400 mb-1">FrameCraft Founding Trial</h2>
-        <p className="text-xs text-stone-400 mb-4">Spot #{claimedSpots + 1} of {maxSpots}</p>
+        {/* Header */}
+        <h2 className="text-xl font-semibold text-[#34d399] tracking-tight">
+          FrameCraft Founding Trial
+        </h2>
+        <p className="text-xs text-stone-400 mt-0.5">
+          Spot #{claimedSpots} of {maxSpots}
+        </p>
 
-        {/* SECTION 1: FREE TRIAL (GMAIL REGISTRATION) */}
-        {!isTrialStarted ? (
-          <form onSubmit={handleStartTrial} className="bg-stone-900/80 p-4 rounded-xl border border-stone-800 mb-5">
-            <label className="block text-xs font-semibold text-stone-300 mb-2">
-              Enter Gmail / Email to activate 2-Day Trial:
-            </label>
-            <input
-              type="email"
-              required
-              placeholder="you@gmail.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-stone-950 border border-stone-700 rounded-lg text-white mb-3 focus:outline-none focus:border-emerald-500"
-            />
-            <button
-              type="submit"
-              className="w-full bg-emerald-600 text-white py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider hover:bg-emerald-500 transition"
-            >
-              Start Free 2-Day Trial →
-            </button>
-          </form>
-        ) : (
-          <div className="bg-emerald-950/50 border border-emerald-800/60 p-4 rounded-xl text-center mb-5">
-            <span className="text-xs font-bold text-emerald-400 block">✓ Trial Activated</span>
-            <p className="text-[11px] text-stone-300 mt-1">
-              Registered to: <strong className="text-white">{savedEmail}</strong>
-            </p>
-            <p className="text-[10px] text-emerald-400 mt-1 font-mono">
-              Timer: 47:59:59 remaining
-            </p>
+        {/* Trial Status Card with Working Timer */}
+        <div className="mt-4 p-4 rounded-xl bg-[#092e20]/80 border border-[#10b981]/30 text-center">
+          <div className="text-sm font-semibold text-[#10b981] flex items-center justify-center gap-1.5">
+            <span>✓</span> Trial Activated
           </div>
-        )}
-
-        {/* SECTION 2: ₹25 LIFETIME FOUNDING CLAIM (UPI) */}
-        <div className="border-t border-stone-800 pt-4">
-          <h3 className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-2">
-            Claim Lifetime Founding Badge (₹25)
-          </h3>
-
-          {errorMessage && (
-            <p className="text-xs text-red-400 bg-red-950/40 border border-red-800/50 p-2 rounded mb-3">
-              {errorMessage}
-            </p>
-          )}
-
-          <form onSubmit={onProcessPayment} className="space-y-3">
-            <div>
-              <label className="block text-[11px] text-stone-400 mb-1">
-                Enter 12-Digit UPI UTR / Transaction Ref No:
-              </label>
-              <input
-                type="text"
-                required
-                placeholder="e.g. 423456789012"
-                value={utrNumber || ''}
-                onChange={(e) => setUtrNumber(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-stone-950 border border-stone-700 rounded-lg text-white focus:outline-none focus:border-amber-500"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={paymentStatus === 'verifying'}
-              className="w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-2.5 rounded-lg text-xs uppercase tracking-wider transition disabled:opacity-50"
-            >
-              {paymentStatus === 'verifying' ? 'Verifying UTR...' : 'Claim Spot for ₹25 →'}
-            </button>
-          </form>
+          <p className="text-xs text-stone-300 mt-1">
+            Registered to: <span className="font-medium text-white">shk.muzzu369@gmail.com</span>
+          </p>
+          <div className="mt-2 text-xs font-mono text-[#34d399] bg-[#031e13] py-1.5 px-3 rounded-lg inline-block border border-[#10b981]/20">
+            Timer: {formatTimer(secondsRemaining)} remaining
+          </div>
         </div>
 
+        {/* Form Section */}
+        <form onSubmit={onProcessPayment} className="mt-6 space-y-4">
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-[#f59e0b] mb-1">
+              CLAIM LIFETIME FOUNDING BADGE (₹25)
+            </label>
+            <p className="text-[11px] text-stone-400 mb-2">
+              Enter 12-Digit UPI UTR / Transaction Ref No:
+            </p>
+            <input
+              type="text"
+              value={utrNumber}
+              onChange={(e) => setUtrNumber(e.target.value)}
+              placeholder="e.g. 423456789012"
+              maxLength={12}
+              className="w-full bg-[#1c1f1d] border border-stone-700 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-stone-500 focus:outline-none focus:border-[#f59e0b] transition"
+            />
+            {errorMessage && (
+              <p className="text-xs text-red-400 mt-1.5">{errorMessage}</p>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            disabled={paymentStatus === 'verifying' || isSubscribed}
+            className="w-full py-3 bg-[#f59e0b] hover:bg-[#d97706] text-black font-bold text-xs uppercase tracking-wider rounded-xl transition shadow-md disabled:opacity-50"
+          >
+            {paymentStatus === 'verifying'
+              ? 'VERIFYING PAYMENT...'
+              : isSubscribed
+              ? 'BADGE CLAIMED ✓'
+              : 'CLAIM SPOT FOR ₹25 →'}
+          </button>
+        </form>
       </div>
     </div>
   );
