@@ -49,7 +49,7 @@ const COMPARISON_ROWS = [
   ],
 ];
 
-function FounderAvatar({ isFounder }) {
+function FounderAvatar({ isFounder, assignedSpot }) {
   return (
     <div className="relative">
       <div className="flex size-11 items-center justify-center rounded-full border-2 border-[#047857] bg-white text-[#047857]">
@@ -57,12 +57,50 @@ function FounderAvatar({ isFounder }) {
       </div>
       {isFounder && (
         <span
-          aria-label="Early Founder badge"
-          className="absolute -bottom-1 -left-1 flex size-5 items-center justify-center rounded-full border-2 border-white bg-[#D4AF37] text-[#4a3900] shadow-sm"
+          aria-label={assignedSpot ? `Assigned spot ${assignedSpot}` : "Early Founder badge"}
+          className="absolute -bottom-1 -left-1 flex size-5 items-center justify-center rounded-full border-2 border-white bg-[#D4AF37] text-[9px] font-black text-[#4a3900] shadow-sm"
         >
-          <Star size={10} fill="currentColor" />
+          {assignedSpot ? assignedSpot : <Star size={10} fill="currentColor" />}
         </span>
       )}
+    </div>
+  );
+}
+
+function ClaimConfirmation({ assignedSpot, onClose, onKnowMore }) {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-5 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="claim-confirmation-title"
+    >
+      <div className="relative w-full max-w-sm rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-2xl">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close confirmation"
+          className="absolute right-3 top-3 rounded-full p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-600"
+        >
+          <X size={17} strokeWidth={1.5} />
+        </button>
+        <p className="text-xs font-bold uppercase tracking-[.18em] text-[#047857]">
+          Spot reserved
+        </p>
+        <div className="mx-auto mt-4 flex size-20 items-center justify-center rounded-full border-2 border-[#D4AF37] bg-[#D4AF37]/10 text-2xl font-black text-[#8a6d0b]">
+          #{assignedSpot}
+        </div>
+        <h2 id="claim-confirmation-title" className="mt-5 text-lg font-black text-gray-900">
+          It&apos;s a small investment to upgrade to next phase
+        </h2>
+        <button
+          type="button"
+          onClick={onKnowMore}
+          className="mt-5 rounded-2xl border border-[#047857] px-5 py-3 text-sm font-bold text-[#047857] hover:bg-emerald-50"
+        >
+          Know More
+        </button>
+      </div>
     </div>
   );
 }
@@ -655,6 +693,9 @@ function HomeScreen({
 export default function App() {
   const isFounder = true;
   const [claimedSlots, setClaimedSlots] = useState(0);
+  const [assignedSpot, setAssignedSpot] = useState(null);
+  const [isClaimConfirmationOpen, setIsClaimConfirmationOpen] = useState(false);
+  const claimInProgressRef = useRef(false);
   const [totalSlots] = useState(4500);
   const [mediaType, setMediaType] = useState("video");
   const [pollVote, setPollVote] = useState(null);
@@ -705,8 +746,12 @@ export default function App() {
       );
   };
   const claim = () => {
-    setClaimedSlots((count) => Math.min(count + 1, totalSlots));
-    notify("Spot reserved for this preview");
+    if (claimInProgressRef.current || assignedSpot !== null) return;
+    claimInProgressRef.current = true;
+    const spotNumber = Math.min(claimedSlots + 1, totalSlots);
+    setAssignedSpot(spotNumber);
+    setClaimedSlots(spotNumber);
+    setIsClaimConfirmationOpen(true);
   };
   return (
     <div className="min-h-screen bg-[#FDFBF7] pb-24 font-sans text-gray-900">
@@ -730,7 +775,7 @@ export default function App() {
             aria-label="Open profile"
             onClick={() => notify("Profile area is ready for the next phase")}
           >
-            <FounderAvatar isFounder={isFounder} />
+            <FounderAvatar isFounder={isFounder} assignedSpot={assignedSpot} />
           </button>
         </header>
         {screen === "home" && (
@@ -819,6 +864,16 @@ export default function App() {
           </button>
         </div>
       </nav>
+      {isClaimConfirmationOpen && assignedSpot !== null && (
+        <ClaimConfirmation
+          assignedSpot={assignedSpot}
+          onClose={() => setIsClaimConfirmationOpen(false)}
+          onKnowMore={() => {
+            setIsClaimConfirmationOpen(false);
+            setIsKnowMoreOpen(true);
+          }}
+        />
+      )}
       {isKnowMoreOpen && (
         <Modal
           onClose={() => setIsKnowMoreOpen(false)}
