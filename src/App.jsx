@@ -466,7 +466,7 @@ function SavedFamily({ projects, onOpen, onRemove, onBack }) {
                   Family Mode · {project.status}
                 </p>
                 <p className="mt-1 text-[10px] text-gray-400">
-                  {project.modified}
+                  Saved {project.savedAt.toLocaleString()}
                 </p>
               </div>
               <button
@@ -725,10 +725,16 @@ export default function App() {
     setScreen("editor");
   };
   const saveProject = (project) => {
+    const savedProject = {
+      ...project,
+      savedAt: new Date(),
+    };
     setFamilyProjects((projects) => [
-      project,
+      savedProject,
       ...projects.filter((item) => item.id !== project.id),
     ]);
+    setCurrentProject(savedProject);
+    setScreen("family-saved");
     notify("Family project saved");
   };
   const openProject = (project) => {
