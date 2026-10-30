@@ -1,10 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Aperture,
   ArrowLeft,
   BarChart3,
   Bookmark,
   Check,
+  ChevronRight,
+  AlertCircle,
+  Lightbulb,
+  ListChecks,
+  TrendingUp,
   CircleUserRound,
   Download,
   FileVideo,
@@ -200,7 +205,7 @@ function Modal({ onClose, onClaim, claimedSlots, totalSlots }) {
   );
 }
 
-function VideoPicker({ onSelected, onCancel }) {
+function VideoPicker({ onSelected, onCancel, mode = "Family" }) {
   const inputRef = useRef(null);
   const [error, setError] = useState("");
   const choose = (event) => {
@@ -209,7 +214,7 @@ function VideoPicker({ onSelected, onCancel }) {
     if (!file) return;
     if (!file.type.startsWith("video/")) {
       setError(
-        "Please choose a video file. Photos are not supported in Family Create.",
+        "Please choose a video file. Photos are not supported in {mode} Create.",
       );
       return;
     }
@@ -227,7 +232,7 @@ function VideoPicker({ onSelected, onCancel }) {
       <div className="flex size-14 items-center justify-center rounded-2xl bg-emerald-50 text-[#047857]">
         <Upload size={26} />
       </div>
-      <h2 className="mt-5 text-2xl font-black">Create a Family video</h2>
+      <h2 className="mt-5 text-2xl font-black">Create a {mode} video</h2>
       <p className="mt-2 text-sm leading-6 text-gray-500">
         Select one video from your device. Your file stays in this browser for
         the preview and is not uploaded.
@@ -261,7 +266,7 @@ function VideoPicker({ onSelected, onCancel }) {
   );
 }
 
-function VideoConfirmation({ file, onContinue, onCancel }) {
+function VideoConfirmation({ file, onContinue, onCancel, mode = "Family" }) {
   const source = URL.createObjectURL(file);
   useEffect(() => () => URL.revokeObjectURL(source), [source]);
   return (
@@ -289,7 +294,7 @@ function VideoConfirmation({ file, onContinue, onCancel }) {
           <h2 className="font-black">Ready to edit</h2>
           <p className="mt-1 truncate text-sm text-gray-500">{file.name}</p>
           <p className="mt-1 text-xs text-gray-400">
-            {(file.size / 1024 / 1024).toFixed(1)} MB · Family Mode project
+            {(file.size / 1024 / 1024).toFixed(1)} MB · {mode} Mode project
           </p>
         </div>
       </div>
@@ -503,6 +508,7 @@ function HomeScreen({
   claimedSlots,
   totalSlots,
   onClaim,
+  professionalActions,
 }) {
   const progress = Math.min(100, Math.round((claimedSlots / totalSlots) * 100));
   return (
@@ -609,7 +615,7 @@ function HomeScreen({
                     key={label}
                     icon={Icon}
                     label={label}
-                    onClick={() => onKnowMore()}
+                    onClick={professionalActions[label]}
                   />
                 ))}
               </div>
@@ -690,6 +696,87 @@ function HomeScreen({
   );
 }
 
+function ProfessionalBriefing({ project, answers, setAnswers, onBack, onContinue }) {
+  const questions = [
+    ["goal", "What is the goal of this video?", "Entertain, tell a story, teach, promote something, or create a cinematic edit."],
+    ["audience", "Who is the intended audience?", "Gaming fans, students, potential customers, or general viewers."],
+    ["style", "What style should the video have?", "Cinematic, energetic, funny, professional, emotional, or documentary."],
+    ["format", "Where will it be published?", "YouTube, Shorts, Reels, or personal project. Add a desired duration if helpful."],
+    ["memory", "What should viewers remember?", "Mention a moment that must be included, or choose Recommend for me."],
+  ];
+  return (
+    <section className="mx-auto max-w-2xl">
+      <button type="button" onClick={onBack} className="mb-5 flex items-center gap-2 text-sm font-bold text-gray-500"><ArrowLeft size={17} /> Back</button>
+      <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-7">
+        <p className="text-[10px] font-bold uppercase tracking-[.18em] text-[#047857]">Professional Mode · 1 of 2</p>
+        <h2 className="mt-2 text-2xl font-black">Let&apos;s shape your edit</h2>
+        <p className="mt-2 text-sm leading-6 text-gray-500">A few focused answers help FrameAI prepare a useful editing direction. You can skip anything optional.</p>
+        <div className="mt-5 h-2 overflow-hidden rounded-full bg-gray-100"><div className="h-full w-1/2 rounded-full bg-[#047857]" /></div>
+        <div className="mt-6 flex flex-col gap-4">
+          {questions.map(([key, title, hint]) => (
+            <label key={key} className="rounded-2xl border border-gray-100 bg-[#FDFBF7] p-4">
+              <span className="text-sm font-bold">{title}</span>
+              <span className="mt-1 block text-xs leading-5 text-gray-500">{hint}</span>
+              <input value={answers[key]} onChange={(event) => setAnswers((current) => ({ ...current, [key]: event.target.value }))} placeholder="Recommend for me" className="mt-3 w-full rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-[#047857]" />
+            </label>
+          ))}
+        </div>
+        <div className="mt-5 flex items-center gap-3 rounded-2xl bg-emerald-50 p-4 text-xs leading-5 text-[#047857]"><AlertCircle size={18} className="shrink-0" /> Gemini is not connected in this workspace. Your answers will be used to prepare a reviewable plan interface, not presented as real AI output.</div>
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row"><button type="button" onClick={() => setAnswers({ goal: "Recommend for me", audience: "Recommend for me", style: "Recommend for me", format: "Recommend for me", memory: "Recommend for me" })} className="rounded-2xl border border-[#047857] px-4 py-3 text-sm font-bold text-[#047857]">Recommend for me</button><button type="button" onClick={() => onContinue({ ...project, briefing: answers })} className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-[#047857] py-3.5 text-sm font-bold text-white">Review edit plan <ChevronRight size={17} /></button></div>
+      </div>
+    </section>
+  );
+}
+
+function ProfessionalPlan({ project, onBack, onApprove }) {
+  const provided = Object.values(project.briefing || {}).filter(Boolean);
+  return (
+    <section className="mx-auto max-w-3xl">
+      <button type="button" onClick={onBack} className="mb-5 flex items-center gap-2 text-sm font-bold text-gray-500"><ArrowLeft size={17} /> Edit briefing</button>
+      <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-7">
+        <div className="flex items-start justify-between gap-4"><div><p className="text-[10px] font-bold uppercase tracking-[.18em] text-[#047857]">Review before editing</p><h2 className="mt-2 text-2xl font-black">Your edit direction</h2></div><Lightbulb className="text-[#D4AF37]" /></div>
+        <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs leading-5 text-amber-900"><strong>Planning interface only.</strong> Gemini is unavailable, so these are proposed placeholders based on {provided.length} briefing answer{provided.length === 1 ? "" : "s"}; no AI result is being claimed.</div>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          {[["Opening and hook", "Start with the clearest visual moment and a short context-setting beat."], ["Structure and pacing", "Build a simple beginning, middle and payoff with purposeful transitions."], ["Treatment", "Use captions and audio treatment only where they support the intended audience."], ["Closing", "End on the memorable point, with an optional loop if the footage supports it."]].map(([title, text]) => <div key={title} className="rounded-2xl border border-gray-100 bg-[#FDFBF7] p-4"><p className="text-sm font-bold">{title}</p><p className="mt-1 text-xs leading-5 text-gray-500">{text}</p></div>)}
+        </div>
+        <div className="mt-5 rounded-2xl border border-gray-100 p-4"><p className="text-xs font-bold uppercase tracking-wide text-gray-400">Proposed actions</p><ol className="mt-3 flex flex-col gap-2 text-sm text-gray-600"><li>1. Select the strongest opening moment.</li><li>2. Shape the main sequence around the chosen audience.</li><li>3. Review captions, audio and the final payoff.</li></ol></div>
+        <button type="button" onClick={onApprove} className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#047857] py-3.5 text-sm font-bold text-white">Approve plan and open editor <ChevronRight size={17} /></button>
+      </div>
+    </section>
+  );
+}
+
+function ProfessionalEditor({ project, guideOpen, setGuideOpen, guideStep, setGuideStep, onBack, onComplete }) {
+  const source = useMemo(() => URL.createObjectURL(project.file), [project.file]);
+  useEffect(() => () => URL.revokeObjectURL(source), [source]);
+  const steps = ["Choose the strongest opening moment", "Shape the main sequence", "Review the final payoff"];
+  return (
+    <section className="mx-auto max-w-4xl">
+      <div className="mb-4 flex items-center justify-between gap-3"><button type="button" onClick={onBack} className="flex items-center gap-2 text-sm font-bold text-gray-500"><ArrowLeft size={17} /> Home</button><span className="text-xs font-semibold text-amber-600">Professional draft · not rendered</span></div>
+      <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6">
+        <div className="flex items-start justify-between gap-3"><div><p className="text-[10px] font-bold uppercase tracking-[.18em] text-[#047857]">Professional Mode editor</p><h2 className="mt-1 truncate text-xl font-black">{project.name}</h2></div><button type="button" onClick={() => setGuideOpen((open) => !open)} className="flex items-center gap-2 rounded-xl border border-[#047857] px-3 py-2 text-xs font-bold text-[#047857]"><Lightbulb size={15} /> Step-by-Step Guide</button></div>
+        <div className="mt-5 overflow-hidden rounded-2xl bg-gray-950"><video src={source} controls playsInline className="aspect-video w-full" /></div>
+        <div className="mt-5 rounded-2xl border border-dashed border-[#047857]/30 bg-emerald-50/40 p-5 text-center"><Sparkles className="mx-auto text-[#047857]" size={22} /><h3 className="mt-2 font-bold">Editing workspace reserved</h3><p className="mt-1 text-xs leading-5 text-gray-500">Real trimming, effects, transitions and rendering will connect here when the video engine is added.</p></div>
+        <div className="mt-5 grid grid-cols-3 gap-2"><div className="rounded-xl bg-gray-50 p-3 text-center"><p className="text-[10px] font-bold uppercase text-gray-400">Timeline</p><p className="mt-1 text-xs font-semibold text-gray-600">Reserved</p></div><div className="rounded-xl bg-gray-50 p-3 text-center"><p className="text-[10px] font-bold uppercase text-gray-400">Tools</p><p className="mt-1 text-xs font-semibold text-gray-600">Ready to connect</p></div><div className="rounded-xl bg-gray-50 p-3 text-center"><p className="text-[10px] font-bold uppercase text-gray-400">Project ID</p><p className="mt-1 truncate text-xs font-semibold text-gray-600">{project.id}</p></div></div>
+        {guideOpen && <aside className="mt-5 rounded-2xl border border-emerald-200 bg-emerald-50 p-4"><div className="flex items-start gap-3"><Lightbulb className="mt-0.5 shrink-0 text-[#047857]" size={18} /><div className="min-w-0"><p className="text-xs font-bold uppercase tracking-wide text-[#047857]">Guide step {guideStep + 1} of {steps.length}</p><h3 className="mt-1 font-bold">{steps[guideStep]}</h3><p className="mt-1 text-xs leading-5 text-gray-600">The actual editor control is not connected yet. Experiment freely, then mark this guidance step complete when the engine can report the action.</p><div className="mt-3 flex flex-wrap gap-2"><button type="button" onClick={() => setGuideStep((step) => Math.min(step + 1, steps.length - 1))} className="rounded-xl bg-[#047857] px-3 py-2 text-xs font-bold text-white">Mark guidance complete</button><button type="button" onClick={() => setGuideOpen(false)} className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-bold text-gray-600">Skip / edit manually</button></div></div></div></aside>}
+        <button type="button" onClick={onComplete} disabled className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-gray-100 py-3 text-sm font-bold text-gray-400" title="Available after a real edit is completed"><Check size={17} /> Complete edit unavailable until editor is connected</button>
+      </div>
+    </section>
+  );
+}
+
+function ProfessionalSaved({ projects, onOpen, onRemove, onBack }) {
+  return <section className="mx-auto max-w-3xl"><button type="button" onClick={onBack} className="mb-5 flex items-center gap-2 text-sm font-bold text-gray-500"><ArrowLeft size={17} /> Back to workspace</button><div className="flex items-end justify-between"><div><p className="text-[10px] font-bold uppercase tracking-[.18em] text-[#047857]">Professional Mode</p><h2 className="mt-1 text-2xl font-black">Saved projects</h2></div><span className="text-xs font-semibold text-gray-400">{projects.length} project{projects.length === 1 ? "" : "s"}</span></div>{projects.length === 0 ? <div className="mt-5 rounded-2xl border border-dashed border-gray-200 bg-white p-10 text-center"><Bookmark className="mx-auto text-gray-300" size={30} /><h3 className="mt-3 font-bold">No Professional projects yet</h3><p className="mt-1 text-sm text-gray-500">A genuinely completed project can be saved here after the editor is connected.</p></div> : <div className="mt-5 flex flex-col gap-3">{projects.map((project) => <article key={project.id} className="flex items-center gap-3 rounded-2xl border border-gray-100 bg-white p-3 shadow-sm"><div className="flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-950 text-white"><video src={URL.createObjectURL(project.file)} muted className="size-full object-cover" /></div><div className="min-w-0 flex-1"><h3 className="truncate text-sm font-bold">{project.name}</h3><p className="mt-1 text-xs text-gray-400">Professional Mode · {project.status}</p><p className="mt-1 text-[10px] text-gray-400">Last modified {project.modified}</p></div><button type="button" onClick={() => onOpen(project)} className="rounded-xl bg-emerald-50 px-3 py-2 text-xs font-bold text-[#047857]">Open</button><button type="button" onClick={() => onRemove(project.id)} aria-label={`Remove ${project.name}`} className="rounded-xl p-2 text-gray-400 hover:bg-red-50 hover:text-red-600"><Trash2 size={17} /></button></article>)}</div>}</section>;
+}
+
+function ProfessionalInventory({ projects, onBack }) {
+  return <section className="mx-auto max-w-3xl"><button type="button" onClick={onBack} className="mb-5 flex items-center gap-2 text-sm font-bold text-gray-500"><ArrowLeft size={17} /> Back to workspace</button><div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-7"><p className="text-[10px] font-bold uppercase tracking-[.18em] text-[#047857]">Professional Mode</p><h2 className="mt-2 text-2xl font-black">Inventory</h2><p className="mt-2 text-sm leading-6 text-gray-500">Only genuinely analysed FrameCraft projects can become eligible submissions. No rewards are awarded in this preview.</p>{projects.length === 0 ? <div className="mt-6 rounded-2xl border border-dashed border-gray-200 p-8 text-center"><ListChecks className="mx-auto text-gray-300" size={30} /><h3 className="mt-3 font-bold">No eligible submissions</h3><p className="mt-1 text-sm text-gray-500">Complete an edit, link an export and finish analysis to populate Inventory.</p></div> : <div className="mt-5 flex flex-col gap-3">{projects.map((project) => <div key={project.id} className="rounded-2xl border border-gray-100 p-4"><div className="flex items-center justify-between gap-3"><p className="font-bold">{project.name}</p><span className="rounded-full bg-gray-100 px-2 py-1 text-[10px] font-bold text-gray-500">Pending validation</span></div></div>)}</div>}</div></section>;
+}
+
+function ProfessionalAnalytics({ records, onBack }) {
+  return <section className="mx-auto max-w-3xl"><button type="button" onClick={onBack} className="mb-5 flex items-center gap-2 text-sm font-bold text-gray-500"><ArrowLeft size={17} /> Back to workspace</button><div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-7"><p className="text-[10px] font-bold uppercase tracking-[.18em] text-[#047857]">Professional Mode</p><h2 className="mt-2 text-2xl font-black">Analytics</h2>{records.length === 0 ? <div className="mt-6 rounded-2xl border border-dashed border-gray-200 p-8 text-center"><TrendingUp className="mx-auto text-gray-300" size={30} /><h3 className="mt-3 font-bold">Analytics will grow with your edits</h3><p className="mt-1 text-sm leading-6 text-gray-500">Complete and analyse Professional projects to see rating, plan-execution, independence and guide-usage trends. No fabricated history is shown.</p></div> : <div className="mt-5 grid gap-3 sm:grid-cols-2">{[["Completed edits", records.length], ["Analysed edits", records.filter((record) => record.analysis).length], ["Guide usage", records.reduce((total, record) => total + (record.guideStepsCompleted || 0), 0)], ["Plan execution", "Pending"]].map(([label, value]) => <div key={label} className="rounded-2xl bg-gray-50 p-4"><p className="text-xs font-bold uppercase tracking-wide text-gray-400">{label}</p><p className="mt-2 text-2xl font-black">{value}</p></div>)}</div>}</div></section>;
+}
+
 export default function App() {
   const isFounder = true;
   const [claimedSlots, setClaimedSlots] = useState(0);
@@ -703,6 +790,13 @@ export default function App() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [currentProject, setCurrentProject] = useState(null);
   const [familyProjects, setFamilyProjects] = useState([]);
+  const [professionalProjects, setProfessionalProjects] = useState([]);
+  const [professionalRecords, setProfessionalRecords] = useState([]);
+  const [currentProfessionalProject, setCurrentProfessionalProject] = useState(null);
+  const [professionalAnswers, setProfessionalAnswers] = useState({ goal: "", audience: "", style: "", format: "", memory: "" });
+  const [guideOpen, setGuideOpen] = useState(false);
+  const [guideStep, setGuideStep] = useState(0);
+  const professionalProjectCounter = useRef(0);
   const [isKnowMoreOpen, setIsKnowMoreOpen] = useState(false);
   const [toast, setToast] = useState("");
   const notify = (message) => {
@@ -712,6 +806,31 @@ export default function App() {
   const startFamilyCreate = () => {
     setSelectedFile(null);
     setScreen("family-picker");
+  };
+  const startProfessionalCreate = () => {
+    setSelectedFile(null);
+    setScreen("professional-picker");
+  };
+  const continueToProfessionalBriefing = (file) => {
+    professionalProjectCounter.current += 1;
+    const project = {
+      id: `professional-${Date.now()}-${professionalProjectCounter.current}`,
+      name: file.name,
+      file,
+      status: "Briefing ready",
+      modified: new Date().toLocaleString(),
+      source: { name: file.name, size: file.size, type: file.type, lastModified: file.lastModified },
+      history: [{ type: "import", at: new Date().toISOString(), mode: "professional" }],
+      planVersion: 0,
+    };
+    setCurrentProfessionalProject(project);
+    setProfessionalAnswers({ goal: "", audience: "", style: "", format: "", memory: "" });
+    setScreen("professional-briefing");
+  };
+  const approveProfessionalPlan = (project) => {
+    const approvedProject = { ...project, status: "Approved plan", planVersion: 1, approvedPlan: { version: 1, source: "briefing interface", approvedAt: new Date().toISOString() }, history: [...(project.history || []), { type: "plan-approved", at: new Date().toISOString(), mode: "professional" }] };
+    setCurrentProfessionalProject(approvedProject);
+    setScreen("professional-editor");
   };
   const continueToEditor = (file) => {
     const project = {
@@ -750,6 +869,9 @@ export default function App() {
       setFamilyProjects((projects) =>
         projects.filter((project) => project.id !== id),
       );
+  };
+  const removeProfessionalProject = (id) => {
+    if (window.confirm("Remove this Professional project? This only removes it from this session.")) setProfessionalProjects((projects) => projects.filter((project) => project.id !== id));
   };
   const claim = () => {
     if (claimInProgressRef.current || assignedSpot !== null) return;
@@ -797,6 +919,12 @@ export default function App() {
               claimedSlots,
               totalSlots,
               onClaim: claim,
+              professionalActions: {
+                Create: startProfessionalCreate,
+                Saved: () => setScreen("professional-saved"),
+                Inventory: () => setScreen("professional-inventory"),
+                Analytics: () => setScreen("professional-analytics"),
+              },
             }}
           />
         )}
@@ -806,14 +934,57 @@ export default function App() {
             onCancel={() => setScreen("home")}
           />
         )}
-        {screen === "family-picker" && selectedFile && (
+        {screen === "professional-picker" && (
+          <VideoPicker
+            mode="Professional"
+            onSelected={setSelectedFile}
+            onCancel={() => setScreen("home")}
+          />
+        )}
+        {(screen === "family-picker" || screen === "professional-picker") && selectedFile && (
           <div className="fixed inset-0 z-40 overflow-y-auto bg-[#FDFBF7] px-4 py-6">
             <VideoConfirmation
               file={selectedFile}
-              onContinue={continueToEditor}
+              mode={screen === "professional-picker" ? "Professional" : "Family"}
+              onContinue={screen === "professional-picker" ? continueToProfessionalBriefing : continueToEditor}
               onCancel={() => setSelectedFile(null)}
             />
           </div>
+        )}
+        {screen === "professional-briefing" && currentProfessionalProject && (
+          <ProfessionalBriefing
+            project={currentProfessionalProject}
+            answers={professionalAnswers}
+            setAnswers={setProfessionalAnswers}
+            onBack={() => setScreen("professional-picker")}
+            onContinue={(project) => { setCurrentProfessionalProject(project); setScreen("professional-plan"); }}
+          />
+        )}
+        {screen === "professional-plan" && currentProfessionalProject && (
+          <ProfessionalPlan
+            project={currentProfessionalProject}
+            onBack={() => setScreen("professional-briefing")}
+            onApprove={() => approveProfessionalPlan(currentProfessionalProject)}
+          />
+        )}
+        {screen === "professional-editor" && currentProfessionalProject && (
+          <ProfessionalEditor
+            project={currentProfessionalProject}
+            guideOpen={guideOpen}
+            setGuideOpen={setGuideOpen}
+            guideStep={guideStep}
+            setGuideStep={setGuideStep}
+            onBack={() => setScreen("home")}
+            onComplete={() => setScreen("professional-completion")}
+          />
+        )}
+        {screen === "professional-saved" && (
+          <ProfessionalSaved projects={professionalProjects} onOpen={(project) => { setCurrentProfessionalProject(project); setScreen("professional-editor"); }} onRemove={removeProfessionalProject} onBack={() => setScreen("home")} />
+        )}
+        {screen === "professional-inventory" && <ProfessionalInventory projects={professionalRecords.filter((project) => project.inventoryEligible)} onBack={() => setScreen("home")} />}
+        {screen === "professional-analytics" && <ProfessionalAnalytics records={professionalRecords} onBack={() => setScreen("home")} />}
+        {screen === "professional-completion" && (
+          <section className="mx-auto max-w-2xl rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-7"><p className="text-[10px] font-bold uppercase tracking-[.18em] text-[#047857]">Professional Mode</p><h2 className="mt-2 text-2xl font-black">Finish your edit</h2><p className="mt-2 text-sm leading-6 text-gray-500">Completion-dependent actions stay unavailable until the real editor can establish a completed render.</p><div className="mt-5 grid gap-3 sm:grid-cols-2"><button type="button" disabled className="rounded-2xl bg-gray-100 py-3 text-sm font-bold text-gray-400">Analyse My Edit</button><button type="button" disabled className="rounded-2xl border border-gray-200 py-3 text-sm font-bold text-gray-400">Skip Analysis</button></div><button type="button" onClick={() => setScreen("professional-editor")} className="mt-4 w-full rounded-2xl border border-[#047857] py-3 text-sm font-bold text-[#047857]">Return to editor</button></section>
         )}
         {screen === "editor" && currentProject && (
           <EditorWorkspace
